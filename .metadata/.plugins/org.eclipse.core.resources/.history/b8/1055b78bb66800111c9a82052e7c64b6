@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="LED.Switch"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+
+<application android:icon="@drawable/icon" android:label="@string/app_name">
+	
+	<activity android:name=".HelloADKActivity" android:label="@string/app_name">
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN"/>
+			<category android:name="android.intent.category.LAUNCHER"/>
+		</intent-filter>
+
+		<intent-filter>
+			<action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"/>
+		</intent-filter>
+	
+		<meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" android:resource="@xml/accessory_filter"/>
+	// references an XML resource file that includes the manufacturer, model and version you defined earlier in your Arduino sketch
+	
+	</activity>
+	
+		<uses-feature android:name="android.hardware.usb.accessory"/> // identifies app uses USB features, so handset must be compatible
+		
+		<uses-library android:name="com.android.future.usb.accessory"/> //	add-on library allows 2.3.4 to use accessory mode
+		
+</application>
+
+
+</manifest>
+<!-- below is the copied text -->
+<!-- 
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.saltapps.helloADK" android:versionCode="1" android:versionName="1.0">3
+
+<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10"/>
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+	
+	<activity android:name=".HelloADKActivity" android:label="@string/app_name">
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN"/>
+			<category android:name="android.intent.category.LAUNCHER"/>
+		</intent-filter>
+
+		<intent-filter>
+			<action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"/>
+		</intent-filter>
+	
+		<meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" android:resource="@xml/accessory_filter"/>
+	// references an XML resource file that includes the manufacturer, model and version you defined earlier in your Arduino sketch
+	
+	</activity>
+	
+		<uses-feature android:name="android.hardware.usb.accessory"/> // identifies app uses USB features, so handset must be compatible
+		
+		<uses-library android:name="com.android.future.usb.accessory"/> //	add-on library allows 2.3.4 to use accessory mode
+		
+</application>
+</manifest>
+ -->

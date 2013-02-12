@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workbench progressCount="18" version="2.0">
 <workbenchAdvisor/>
-<window height="832" width="1371" x="7" y="25">
+<window height="832" width="1371" x="7" y="22">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="250"/>
 </perspectiveBar>
 <coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
-<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="106" y="22"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="134" y="22"/>
 <coolItem id="additions" itemType="typeGroupMarker"/>
 <coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="54" y="22"/>
 <coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="40" y="22"/>
@@ -19,10 +19,10 @@
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="62" y="22"/>
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="62" y="22"/>
-<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="54" y="22"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="98" y="22"/>
 <coolItem id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="54" y="22"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.launch.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.main.toolbar" itemType="typeToolBarContribution" x="32" y="22"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -44,12 +44,12 @@
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelloAndroid.java" partName="HelloAndroid.java" path="/Users/markbreneman/Documents/Eclipse - Workspace/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java" title="HelloAndroid.java" tooltip="HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="637" selectionTopPixel="10"/>
+<editor id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" partName="MotionDetectionActivity Manifest" path="/Users/markbreneman/Documents/Eclipse - Workspace/MotionDetectionActivity/AndroidManifest.xml" title="MotionDetectionActivity Manifest" tooltip="MotionDetectionActivity/AndroidManifest.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MotionDetectionActivity/AndroidManifest.xml"/>
 </editor>
-<editor activePart="true" focus="true" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="activity_hello_android.xml" partName="activity_hello_android.xml" path="/Users/markbreneman/Documents/Eclipse - Workspace/HelloAndroid/res/layout/activity_hello_android.xml" title="activity_hello_android.xml" tooltip="HelloAndroid/res/layout/activity_hello_android.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/HelloAndroid/res/layout/activity_hello_android.xml"/>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MotionDetectionActivity.java" partName="MotionDetectionActivity.java" path="/Users/markbreneman/Documents/Eclipse - Workspace/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java" title="MotionDetectionActivity.java" tooltip="MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="8" selectionOffset="1732" selectionTopPixel="345"/>
 </editor>
 </editors>
 <views>
@@ -64,6 +64,9 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
+<expanded>
+<category IMemento.internal.id="Warnings (7 items)"/>
+</expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="233" org.eclipse.ui.ide.severityAndDescriptionField="604"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
@@ -112,7 +115,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.PackageExplorer" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -237,129 +240,157 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/Camera Trap/AndroidManifest.xml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/HelloAndroid/res/layout/activity_hello_android.xml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/gen/com/markbreneman/helloandroid/R.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/HelloAndroid/bin/AndroidManifest.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/HelloAndroid/res/layout/activity_hello_android.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/MotionDetectionActivity/AndroidManifest.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/HelloAndroid/AndroidManifest.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/gen/com/markbreneman/helloandroid/R.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/gen/com/jwetherell/motion_detection/BuildConfig.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/motiondetection1/res/layout/activity_motion_camera.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/MotionDetectionActivity/bin/AndroidManifest.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/gen/com/jwetherell/motion_detection/BuildConfig.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/HelloAndroid/AndroidManifest.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/gen/com/markbreneman/helloandroid/R.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/image/ImageProcessing.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/MotionDetectionActivity/AndroidManifest.xml"/>
 </editors>
-<item historyLabel="Camera Trap Manifest" index="0"/>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="HelloAndroid Manifest" index="4"/>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="348" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="348" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="358" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="358" y="0"/>
-</item>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="1"/>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="340" y="0"/>
-</item>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="588" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="740" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="2">
-<position info="not_deleted" x="530" y="12"/>
-</item>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="HelloAndroid.java" index="5">
-<position info="not_deleted" x="370" y="0"/>
-</item>
-<item historyLabel="R.java" index="3">
-<position info="not_deleted" x="425" y="0"/>
-</item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
+<item historyLabel="activity_hello_android.xml" index="2"/>
+<item historyLabel="HelloAndroid.java" index="1">
 <position info="not_deleted" x="637" y="0"/>
 </item>
-<item historyLabel="R.java" index="3">
+<item historyLabel="R.java" index="0">
 <position info="not_deleted" x="425" y="0"/>
 </item>
-<item historyLabel="HelloAndroid.java" index="5">
+<item historyLabel="HelloAndroid.java" index="1">
 <position info="not_deleted" x="637" y="0"/>
 </item>
-<item historyLabel="R.java" index="3">
+<item historyLabel="R.java" index="0">
 <position info="not_deleted" x="425" y="0"/>
 </item>
-<item historyLabel="HelloAndroid.java" index="5">
+<item historyLabel="HelloAndroid.java" index="1">
 <position info="not_deleted" x="637" y="0"/>
 </item>
-<item historyLabel="activity_hello_android.xml" index="6"/>
-<item historyLabel="HelloAndroid.java" index="5">
+<item historyLabel="activity_hello_android.xml" index="2"/>
+<item historyLabel="HelloAndroid.java" index="1">
 <position info="not_deleted" x="637" y="0"/>
 </item>
-<item active="true" historyLabel="activity_hello_android.xml" index="6">
+<item historyLabel="activity_hello_android.xml" index="2">
 <position info="not_deleted" x="530" y="315"/>
+</item>
+<item historyLabel="MotionDetectionActivity Manifest" index="3"/>
+<item historyLabel="HelloAndroid Manifest" index="4"/>
+<item historyLabel="MotionDetectionActivity Manifest" index="3"/>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1179" y="23"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1813" y="0"/>
+</item>
+<item historyLabel="R.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1179" y="23"/>
+</item>
+<item historyLabel="HelloAndroid.java" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="HelloAndroid.java" index="7">
+<position info="not_deleted" x="265" y="12"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1179" y="23"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1852" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1837" y="1"/>
+</item>
+<item historyLabel="R.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="R.java" index="6">
+<position info="not_deleted" x="241" y="1"/>
+</item>
+<item historyLabel="BuildConfig.java" index="8">
+<position info="not_deleted" x="112" y="11"/>
+</item>
+<item historyLabel="BuildConfig.java" index="8">
+<position info="not_deleted" x="158" y="5"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1179" y="23"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="5511" y="15"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="2643" y="7"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="5">
+<position info="not_deleted" x="1732" y="8"/>
+</item>
+<item historyLabel="activity_motion_camera.xml" index="9"/>
+<item historyLabel="MotionDetectionActivity.java" index="10">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="10">
+<position info="not_deleted" x="2470" y="22"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="10">
+<position info="not_deleted" x="1732" y="8"/>
+</item>
+<item historyLabel="MotionDetectionActivity Manifest" index="11"/>
+<item historyLabel="MotionDetectionActivity.java" index="10">
+<position info="not_deleted" x="1732" y="8"/>
+</item>
+<item historyLabel="BuildConfig.java" index="12">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="BuildConfig.java" index="12">
+<position info="not_deleted" x="158" y="5"/>
+</item>
+<item historyLabel="BuildConfig.java" index="12">
+<position info="not_deleted" x="112" y="11"/>
+</item>
+<item historyLabel="HelloAndroid Manifest" index="13"/>
+<item historyLabel="R.java" index="14">
+<position info="not_deleted" x="241" y="1"/>
+</item>
+<item historyLabel="HelloAndroid.java" index="15">
+<position info="not_deleted" x="265" y="12"/>
+</item>
+<item historyLabel="ImageProcessing.java" index="16">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="17">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="17">
+<position info="not_deleted" x="1179" y="23"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="17">
+<position info="not_deleted" x="1838" y="0"/>
+</item>
+<item historyLabel="ImageProcessing.java" index="16">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity.java" index="17">
+<position info="not_deleted" x="1814" y="0"/>
+</item>
+<item historyLabel="MotionDetectionActivity Manifest" index="18"/>
+<item active="true" historyLabel="MotionDetectionActivity.java" index="17">
+<position info="not_deleted" x="1732" y="8"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -382,17 +413,38 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MotionDetectionActivity.java" tooltip="MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java">
+<persistable path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/MotionDetectionActivity.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="MotionDetectionActivity/AndroidManifest.xml">
+<persistable path="/MotionDetectionActivity/AndroidManifest.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ImageProcessing.java" tooltip="MotionDetectionActivity/src/com/jwetherell/motion_detection/image/ImageProcessing.java">
+<persistable path="/MotionDetectionActivity/src/com/jwetherell/motion_detection/image/ImageProcessing.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="BuildConfig.java" tooltip="MotionDetectionActivity/gen/com/jwetherell/motion_detection/BuildConfig.java">
+<persistable path="/MotionDetectionActivity/gen/com/jwetherell/motion_detection/BuildConfig.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="MotionDetectionActivity/bin/AndroidManifest.xml">
+<persistable path="/MotionDetectionActivity/bin/AndroidManifest.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="activity_motion_camera.xml" tooltip="motiondetection1/res/layout/activity_motion_camera.xml">
+<persistable path="/motiondetection1/res/layout/activity_motion_camera.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelloAndroid.java" tooltip="HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java">
+<persistable path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="R.java" tooltip="HelloAndroid/gen/com/markbreneman/helloandroid/R.java">
+<persistable path="/HelloAndroid/gen/com/markbreneman/helloandroid/R.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="HelloAndroid/AndroidManifest.xml">
+<persistable path="/HelloAndroid/AndroidManifest.xml"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="activity_hello_android.xml" tooltip="HelloAndroid/res/layout/activity_hello_android.xml">
 <persistable path="/HelloAndroid/res/layout/activity_hello_android.xml"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="HelloAndroid/bin/AndroidManifest.xml">
 <persistable path="/HelloAndroid/bin/AndroidManifest.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="R.java" tooltip="HelloAndroid/gen/com/markbreneman/helloandroid/R.java">
-<persistable path="/HelloAndroid/gen/com/markbreneman/helloandroid/R.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelloAndroid.java" tooltip="HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java">
-<persistable path="/HelloAndroid/src/com/markbreneman/helloandroid/HelloAndroid.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.layout.LayoutEditor" name="main.xml" tooltip="Camera Trap/res/layout/main.xml">
 <persistable path="/Camera Trap/res/layout/main.xml"/>
@@ -405,27 +457,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.layout.LayoutEditor" name="main.xml" tooltip="ArduinoReceiveData/res/layout/main.xml">
 <persistable path="/ArduinoReceiveData/res/layout/main.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ArduinoReceiveDataActivityActivity.java" tooltip="ArduinoReceiveData/src/mark/arduinoreceivedata/ArduinoReceiveDataActivityActivity.java">
-<persistable path="/ArduinoReceiveData/src/mark/arduinoreceivedata/ArduinoReceiveDataActivityActivity.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="ArduinoReceiveData/AndroidManifest.xml">
-<persistable path="/ArduinoReceiveData/AndroidManifest.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="Hello Arduino/AndroidManifest.xml">
-<persistable path="/Hello Arduino/AndroidManifest.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelloArduinoActivity.java" tooltip="Hello Arduino/src/com/muzzi/helloarduino/HelloArduinoActivity.java">
-<persistable path="/Hello Arduino/src/com/muzzi/helloarduino/HelloArduinoActivity.java"/>
-</file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="UsbManager.class" tooltip="com.android.future.usb.UsbManager">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=ArduinoReceiveData/\/Users\/markbreneman\/android-sdks\/add-ons\/addon-google_apis-google_inc_-10\/libs\/usb.jar&lt;com.android.future.usb(UsbManager.class"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ArduinoReceiveDataActivityActivity.java" tooltip="ArduinoReceiveDataActivity/src/mark/arduinoreceivedata/ArduinoReceiveDataActivityActivity.java">
-<persistable path="/ArduinoReceiveDataActivity/src/mark/arduinoreceivedata/ArduinoReceiveDataActivityActivity.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="ArduinoReceiveDataActivity/AndroidManifest.xml">
-<persistable path="/ArduinoReceiveDataActivity/AndroidManifest.xml"/>
 </file>
 </mruList>
 </workbench>

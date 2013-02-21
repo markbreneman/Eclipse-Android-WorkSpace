@@ -1,0 +1,47 @@
+package com.markbreneman.helloandroid;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Log;
+
+public class HelloAndroid extends Activity{
+
+	Button fartButton;
+	/** Called when the activity is first created. */
+//	@Override
+//	protected void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//		setContentView(R.layout.activity_hello_android);
+//		
+//		fartButton = (Button) findViewById(R.id.fart_Button);
+//		fartButton.setOnClickListener(new OnClickListener() {
+//			public void onCLick(View v{
+//				fartButton.setText("You Clicked Me");
+//				Toast t =Toast.makeText(this, "Button Clicked!",Toast.LENGTH_LONG);
+//				t.show();
+//			}});
+//		
+//	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hello_android);
+        
+        fartButton = (Button) this.findViewById(R.id.fart_button);
+        fartButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				fartButton.setText("You Clicked Me");
+		    	
+				Toast t = Toast.makeText(this,"Button Clicked!",Toast.LENGTH_LONG);
+    				t.show();
+
+			}});        
+    }
+	
+}

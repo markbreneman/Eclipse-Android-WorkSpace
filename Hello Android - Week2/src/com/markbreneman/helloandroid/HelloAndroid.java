@@ -1,16 +1,15 @@
 package com.markbreneman.helloandroid;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.util.Log;
+import android.widget.Toast;
 
-public class HelloAndroid extends Activity implements OnClickListener {
-
+public class HelloAndroid extends Activity implements OnClickListener{
 	TextView fartTextView;
 	Button fartButton;
 	
@@ -21,22 +20,23 @@ public class HelloAndroid extends Activity implements OnClickListener {
 		
 		fartTextView = (TextView) findViewById(R.id.fart_TextView);
 		fartButton = (Button) findViewById(R.id.fart_Button);
+		
 		fartButton.setOnClickListener(this);
+		Log.v("onCreate", "Created!");
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_hello_android, menu);
-		return true;
-	}
 
 	@Override
 	public void onClick(View clickedView) {
-		fartTextView.setText("FAAAAAAAAAAARRRRRRTTTTS");
+		fartTextView.setText("You Farted!");
+		Toast toast=Toast.makeText(this, "FFFFFFAAAARRRTTTTTS", Toast.LENGTH_LONG);
+		toast.show();
+		Log.v("FartButtonPressed", "farted!");
 		
 		
 	}
+	
 
+	
 }

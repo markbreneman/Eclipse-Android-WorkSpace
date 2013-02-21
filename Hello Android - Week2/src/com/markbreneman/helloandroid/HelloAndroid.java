@@ -25,7 +25,19 @@ public class HelloAndroid extends Activity implements OnClickListener{
 		Log.v("onCreate", "Created!");
 		
 	}
+	@Override
+	protected void onResume(){
+		super.onResume();
+		
+		fartTextView.setText("Feeling Gassy!");
+	}
 
+	@Override
+	protected void onDestroy(){
+		fartTextView = null;
+		Log.v("mainactivity", "onDestroy Called");
+		super.onDestroy();
+	}
 
 	@Override
 	public void onClick(View clickedView) {

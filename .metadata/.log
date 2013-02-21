@@ -9418,3 +9418,6 @@ org.xml.sax.SAXParseException: The markup in the document preceding the root ele
 
 !ENTRY com.android.ide.eclipse.adt 4 0 2013-02-21 12:49:29.054
 !MESSAGE Failed to load properties file for project 'SaveState-Week2'
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-02-21 13:53:42.681
+!MESSAGE Failed to load properties file for project 'Week2-SwitchingViews'

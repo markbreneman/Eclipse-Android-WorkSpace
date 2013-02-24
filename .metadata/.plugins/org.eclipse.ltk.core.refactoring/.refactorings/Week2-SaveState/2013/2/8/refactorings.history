@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.example.savestate_week2&apos; to &apos;com.example.week2_SaveState&apos;&#x0A;- Original project: &apos;Week2-SaveState&apos;&#x0A;- Original element: &apos;Week2-SaveState/src/com.example.savestate_week2&apos;&#x0A;- Renamed element: &apos;Week2-SaveState/src/com.example.week2_SaveState&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.example.savestate_week2&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.example.savestate_week2" name="com.example.week2_SaveState" qualified="false" references="true" stamp="1361475250705" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,61 @@
+package com.example.promedia_timerbased;
+
+//import android.R;
+import android.app.Activity;
+import android.hardware.Camera;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends Activity implements OnClickListener, SurfaceHolder.Callback, Camera.PictureCallback{
+	
+	SurfaceView cameraView;
+	SurfaceHolder surfaceHolder;
+	Camera camera;
+	
+	Button startButton;
+	TextView countdownTextView;
+	
+	Handler timerUpdateHandler;
+	boolean timerRunning = false;
+	int currentTime = 10;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		cameraView = (SurfaceView) this.findViewById(R.id.CameraView);
+		surfaceHolder = cameraView.getHolder();
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		surfaceHolder.addCallback(this);
+		
+		countdownTextView = (TextView) findViewById(R.id.CountDownTextView);
+		startButton = (Button) findViewById(R.id.CountDownButton);
+		startButton.setOnClickListener(this);
+		timerUpdateHandler = new Handler();
+	}
+	
+	
+	public void onClick(View v) {
+		if(!timerRunning){
+			timerRunning = true;
+			timerUpdateHandler.post(timerUpdateTask);
+		}
+	}
+		
+	
+//
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
+
+}

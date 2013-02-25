@@ -1,0 +1,96 @@
+package com.example.promedia_pointandshoot;
+
+
+//import android.R;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.hardware.Camera;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+public class MainActivity extends Activity implements SurfaceHolder.Callback {
+	
+	SurfaceHolder surfaceHolder;
+	SurfaceView cameraView;
+	Camera camera;
+	public static final int LARGEST_WIDTH = 200;
+	public static final int LARGEST_HEIGHT = 200;
+	
+	
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		
+		setContentView(R.layout.activity_main);
+		
+		cameraView = (SurfaceView) this.findViewById(R.id.CameraView);
+		surfaceHolder = cameraView.getHolder();
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		surfaceHolder.addCallback(this);
+		
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		camera = Camera.open();
+		try{
+			Camera.Parameters parameters=camera.getParameters();
+//			List<String> colorEffects = parameters.getSupportedColorEffects();
+//			Iterator<String> cei = colorEffects.iterator();
+//			while(cei.hasNext())
+//			{String currentEffect = cei.next();
+//			Log.v("camera", "Checking" + currentEffect);
+//			if(currentEffect.equals(Camera.Parameters.EFFECT_SEPIA)){
+//				Log.v("camera", "usingSolarize");
+//				parameters.setColorEffect(Camera.Parameters.EFFECT_SEPIA);
+//				break;
+//			}	
+//			}
+//			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+
+	
+			
+			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
+				
+				parameters.set("orientation", "portrait");
+				
+				camera.setDisplayOrientation(90);
+			}
+			else{
+				parameters.set("orientation", "landscape");
+				camera.setDisplayOrientation(0);
+			}
+			camera.setParameters(parameters);
+			camera.setPreviewDisplay(holder);
+		}
+		catch(IOException exception){
+			camera.release();
+			Log.v("MainActivity", exception.getMessage());
+		}
+		camera.startPreview();
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		camera.stopPreview();
+		camera.release();
+	}
+	
+	
+
+	
+
+}

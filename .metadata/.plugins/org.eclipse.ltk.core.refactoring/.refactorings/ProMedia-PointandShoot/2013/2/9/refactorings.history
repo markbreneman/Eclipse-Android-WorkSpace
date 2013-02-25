@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Change Layout" description="Change Layout" file="/ProMedia-PointandShoot/res/layout/activity_main.xml" flags="6" flatten="true" id="com.android.ide.eclipse.adt.refactoring.convert" proj="/ProMedia-PointandShoot" sel-end="649" sel-start="0" stamp="1361753342508" type="android.widget.LinearLayout"/>
+</session>

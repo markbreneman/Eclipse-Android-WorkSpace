@@ -1,0 +1,38 @@
+package com.example.promedia_pointandshoot;
+
+//import android.R;
+import android.R;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+public class MainActivity extends Activity implements SurfaceHolder.Callback {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		SurfaceView cameraView = (CameraView) this.findViewById(R.id.CameraView);
+		SurfaceHolder surfaceHolder = cameraView.getHolder();
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		
+		
+		public void surfaceChanged( SurfaceHolder holder, int format, int w, int h){}
+		public void surfaceCreated( SurfaceHolder holder){}
+		public void surfaceDestroyed( SurfaceHolder holder){}
+		
+	
+	}
+
+	
+			
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
+
+}

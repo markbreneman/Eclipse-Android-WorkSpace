@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.example.promedia_timerbased&apos; to &apos;com.example.promedia_timelapsed&apos;&#x0A;- Original project: &apos;ProMedia-TimeLapsed&apos;&#x0A;- Original element: &apos;ProMedia-TimeLapsed/src/com.example.promedia_timerbased&apos;&#x0A;- Renamed element: &apos;ProMedia-TimeLapsed/src/com.example.promedia_timelapsed&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.example.promedia_timerbased&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.example.promedia_timerbased" name="com.example.promedia_timelapsed" qualified="false" references="true" stamp="1361837397808" textual="false" version="1.0"/>
+</session>

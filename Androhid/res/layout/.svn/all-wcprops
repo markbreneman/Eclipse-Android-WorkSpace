@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/12/trunk/res/layout
+END
+bt_device_picker.xml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/2/trunk/res/layout/bt_device_picker.xml
+END
+preferences.xml
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/12/trunk/res/layout/preferences.xml
+END
+player_tab.xml
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/2/trunk/res/layout/player_tab.xml
+END
+main.xml
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/2/trunk/res/layout/main.xml
+END
+video_tab.xml
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/2/trunk/res/layout/video_tab.xml
+END
+presenter_tab.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/2/trunk/res/layout/presenter_tab.xml
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/2/trunk/res/drawable-mdpi
+END
+ic_tab_presenter_selected.png
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/ic_tab_presenter_selected.png
+END
+ic_tab_presenter_unselected.png
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/ic_tab_presenter_unselected.png
+END
+ic_tab_player_selected.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/ic_tab_player_selected.png
+END
+btn_dial_pressed.9.png
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/btn_dial_pressed.9.png
+END
+ic_tab_player_unselected.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/ic_tab_player_unselected.png
+END
+icon.png
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/icon.png
+END
+btn_dial_selected.9.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/btn_dial_selected.9.png
+END
+btn_dial_normal.9.png
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/res/drawable-mdpi/btn_dial_normal.9.png
+END

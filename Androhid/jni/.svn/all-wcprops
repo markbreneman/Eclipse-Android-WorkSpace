@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 26
+/svn/!svn/ver/36/trunk/jni
+END
+javah_NativeBtHid.sh
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/2/trunk/jni/javah_NativeBtHid.sh
+END
+hidserv.c
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/36/trunk/jni/hidserv.c
+END
+Android.mk
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/2/trunk/jni/Android.mk
+END
+sdp.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/2/trunk/jni/sdp.c
+END
+Application.mk
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/2/trunk/jni/Application.mk
+END
+androhid.c
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/34/trunk/jni/androhid.c
+END
+hidserv.h
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/2/trunk/jni/hidserv.h
+END
+sdp.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/2/trunk/jni/sdp.h
+END
+androhid.h
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/2/trunk/jni/androhid.h
+END

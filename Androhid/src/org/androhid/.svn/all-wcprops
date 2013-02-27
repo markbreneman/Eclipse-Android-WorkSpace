@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/36/trunk/src/org/androhid
+END
+ButtonGridLayout.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/2/trunk/src/org/androhid/ButtonGridLayout.java
+END
+Preferences.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/22/trunk/src/org/androhid/Preferences.java
+END
+NativeBtHid.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/34/trunk/src/org/androhid/NativeBtHid.java
+END
+HidKeyMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/2/trunk/src/org/androhid/HidKeyMapper.java
+END
+BtDevicePicker.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/13/trunk/src/org/androhid/BtDevicePicker.java
+END
+PlayerTab.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/2/trunk/src/org/androhid/PlayerTab.java
+END
+BtDevice.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2/trunk/src/org/androhid/BtDevice.java
+END
+SdpInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/6/trunk/src/org/androhid/SdpInterface.java
+END
+AndroHid.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/36/trunk/src/org/androhid/AndroHid.java
+END
+VideoTab.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2/trunk/src/org/androhid/VideoTab.java
+END
+PresenterTab.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/2/trunk/src/org/androhid/PresenterTab.java
+END

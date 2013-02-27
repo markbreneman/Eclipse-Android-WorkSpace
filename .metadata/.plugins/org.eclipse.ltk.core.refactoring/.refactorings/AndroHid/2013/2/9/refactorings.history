@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;AndroHid&apos;&#x0A;- Original project: &apos;AndroHid&apos;&#x0A;- Original element: &apos;AndroHid/gen/org.androhid&apos;" description="Delete element" element1="/gen&lt;org.androhid" element2="/gen&lt;org" elements="2" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1361983717308" subPackages="false" version="1.0"/>
+</session>

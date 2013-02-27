@@ -11110,3 +11110,100 @@ Caused by: java.io.FileNotFoundException: /Users/markbreneman/Documents/Eclipse 
 	at com.android.sdklib.build.ApkBuilder.checkInputFile(ApkBuilder.java:934)
 	at com.android.sdklib.build.ApkBuilder.init(ApkBuilder.java:438)
 	... 21 more
+!SESSION 2013-02-25 22:16:01.538 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.6.0_41
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -keyring /Users/markbreneman/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.ide.eclipse.adt.package.product -keyring /Users/markbreneman/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-02-25 22:16:14.161
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.core.resources 2 2 2013-02-27 11:33:21.173
+!MESSAGE Save operation warnings.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2013-02-27 11:33:21.173
+!MESSAGE The project description file (.project) for 'CameraIntent-RT' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-02-27 11:35:44.043
+!MESSAGE Unable to read /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+!STACK 0
+com.android.io.StreamException: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:55)
+	at com.android.ide.common.xml.AndroidManifestParser.parse(AndroidManifestParser.java:609)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parseUnchecked(AndroidManifestHelper.java:75)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parse(AndroidManifestHelper.java:102)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parseForData(AndroidManifestHelper.java:177)
+	at com.android.ide.eclipse.adt.internal.project.ProjectHelper.findAndroidProjectByAppName(ProjectHelper.java:534)
+	at com.android.ide.eclipse.adt.DebuggerConnector$WorkspaceAppCache.isWorkspaceApp(DebuggerConnector.java:96)
+	at com.android.ide.eclipse.adt.DebuggerConnector.isWorkspaceApp(DebuggerConnector.java:60)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.isImportantMessage(LogCatMonitor.java:179)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.checkMessages(LogCatMonitor.java:157)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.access$4(LogCatMonitor.java:148)
+	at com.android.ide.eclipse.ddms.LogCatMonitor$3.bufferChanged(LogCatMonitor.java:140)
+	at com.android.ddmuilib.logcat.LogCatReceiver.sendLogChangedEvent(LogCatReceiver.java:205)
+	at com.android.ddmuilib.logcat.LogCatReceiver.processLogMessages(LogCatReceiver.java:171)
+	at com.android.ddmuilib.logcat.LogCatReceiver.processLogLines(LogCatReceiver.java:161)
+	at com.android.ddmuilib.logcat.LogCatReceiver.access$300(LogCatReceiver.java:36)
+	at com.android.ddmuilib.logcat.LogCatReceiver$LogCatOutputReceiver.processNewLines(LogCatReceiver.java:153)
+	at com.android.ddmlib.MultiLineReceiver.addOutput(MultiLineReceiver.java:100)
+	at com.android.ddmlib.AdbHelper.executeRemoteCommand(AdbHelper.java:419)
+	at com.android.ddmlib.Device.executeShellCommand(Device.java:462)
+	at com.android.ddmuilib.logcat.LogCatReceiver$1.run(LogCatReceiver.java:110)
+	at java.lang.Thread.run(Thread.java:680)
+Caused by: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:783)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:278)
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:49)
+	... 21 more
+!SESSION 2013-02-27 11:49:35.538 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.6.0_41
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -keyring /Users/markbreneman/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.ide.eclipse.adt.package.product -keyring /Users/markbreneman/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-02-27 11:49:59.901
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-02-27 11:50:03.164
+!MESSAGE projectOpenedWithWorkspace: failed to find manifest package for project CameraIntent-RT
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-02-27 11:50:09.528
+!MESSAGE Failed to load properties file for project 'CameraIntent-RT'
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-02-27 11:51:56.657
+!MESSAGE Unable to read /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+!STACK 0
+com.android.io.StreamException: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:55)
+	at com.android.ide.common.xml.AndroidManifestParser.parse(AndroidManifestParser.java:609)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parseUnchecked(AndroidManifestHelper.java:75)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parse(AndroidManifestHelper.java:102)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parseForData(AndroidManifestHelper.java:177)
+	at com.android.ide.eclipse.adt.internal.project.ProjectHelper.findAndroidProjectByAppName(ProjectHelper.java:534)
+	at com.android.ide.eclipse.adt.DebuggerConnector$WorkspaceAppCache.isWorkspaceApp(DebuggerConnector.java:96)
+	at com.android.ide.eclipse.adt.DebuggerConnector.isWorkspaceApp(DebuggerConnector.java:60)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.isImportantMessage(LogCatMonitor.java:179)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.checkMessages(LogCatMonitor.java:157)
+	at com.android.ide.eclipse.ddms.LogCatMonitor.access$4(LogCatMonitor.java:148)
+	at com.android.ide.eclipse.ddms.LogCatMonitor$3.bufferChanged(LogCatMonitor.java:140)
+	at com.android.ddmuilib.logcat.LogCatReceiver.sendLogChangedEvent(LogCatReceiver.java:205)
+	at com.android.ddmuilib.logcat.LogCatReceiver.processLogMessages(LogCatReceiver.java:171)
+	at com.android.ddmuilib.logcat.LogCatReceiver.processLogLines(LogCatReceiver.java:161)
+	at com.android.ddmuilib.logcat.LogCatReceiver.access$300(LogCatReceiver.java:36)
+	at com.android.ddmuilib.logcat.LogCatReceiver$LogCatOutputReceiver.processNewLines(LogCatReceiver.java:153)
+	at com.android.ddmlib.MultiLineReceiver.addOutput(MultiLineReceiver.java:100)
+	at com.android.ddmlib.AdbHelper.executeRemoteCommand(AdbHelper.java:419)
+	at com.android.ddmlib.Device.executeShellCommand(Device.java:462)
+	at com.android.ddmuilib.logcat.LogCatReceiver$1.run(LogCatReceiver.java:110)
+	at java.lang.Thread.run(Thread.java:680)
+Caused by: org.eclipse.core.internal.resources.ResourceException: File not found: /Users/markbreneman/Downloads/Android-Development-master/CameraIntent/AndroidManifest.xml.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:783)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:278)
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:49)
+	... 21 more

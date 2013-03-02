@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout 
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+	</LinearLayout>
+	<View android:background="?android:attr/dividerVertical"
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"/>
+	<FrameLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<ScrollView android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<include layout="@layout/threshold_input"/>
+		</ScrollView>
+	</FrameLayout>
+	<View android:background="?android:attr/dividerVertical"
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"/>
+	<LinearLayout 
+		style="?android:attr/buttonBarStyle"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center">
+		<Button android:id="@+id/threshold_input_button_ok"
+			android:layout_height="match_parent"
+			android:layout_width="fill_parent"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_gravity="left"
+			android:layout_weight="1"
+			android:textSize="14dp"
+			android:visibility="visible"
+			android:text="@string/threshold_input_ok"/>
+		<Button android:id="@+id/threshold_input_button_cancel"
+			android:layout_height="match_parent"
+			android:layout_width="fill_parent"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_gravity="right"
+			android:layout_weight="1"
+			android:textSize="14dp"
+			android:visibility="visible"
+			android:text="@string/threshold_input_cancel"/>
+	</LinearLayout>
+</LinearLayout>

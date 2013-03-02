@@ -1,0 +1,34 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.me.views;
+
+import android.content.Context;
+import android.widget.LinearLayout;
+import org.jastrzab.move.R;
+//import org.me.file.selector.Selector;
+//import org.me.file.selector.SelectorCallback;
+
+/**
+ *
+ * @author Jastrzab
+ */
+//public class Select extends Selector {
+//
+//	public Select(Context context, SelectorCallback callback) {
+//		super(context, callback);
+//		setTitle(R.string.save_events_title);
+//	}
+//
+//	@Override
+//	public void deploy(int id) {
+//		super.deploy(id, Selector.SELECTION_TYPE.FOLDER, Selector.SELECTION_MODE.SUNGLE);
+//	}
+//
+//	@Override
+//	protected void onDeploy(Context context, LinearLayout view) {
+//
+//	}
+
+//}

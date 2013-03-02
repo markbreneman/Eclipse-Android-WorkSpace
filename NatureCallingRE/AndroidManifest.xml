@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.naturecalling"
+      android:versionCode="8"
+      android:versionName="1.7"
+	 android:installLocation="preferExternal">
+	<application android:name="org.jastrzab.move.Global"
+		android:label="@string/app_name"
+		android:icon="@drawable/app_icon"
+		android:theme="@style/AplicationStyle"
+		android:hardwareAccelerated="true">
+		<activity android:name="org.jastrzab.move.Main"
+			android:label="@string/app_name"
+			android:icon="@drawable/app_icon"
+			android:launchMode="singleTop"
+			android:configChanges="keyboardHidden|orientation">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name="org.jastrzab.move.Detector"
+			android:label="@string/detect_switch_title"
+			android:icon="@drawable/app_icon"
+			android:launchMode="standard"
+			android:excludeFromRecents="true"
+			android:configChanges="keyboardHidden|orientation">
+		</activity>
+		<activity android:name="org.jastrzab.move.Preview"
+			android:label="@string/preview_name"
+			android:icon="@drawable/app_icon"
+			android:launchMode="singleTop"
+			android:configChanges="keyboardHidden|orientation"
+			android:screenOrientation="landscape"
+			android:excludeFromRecents="true"
+			android:noHistory= "true"
+			android:theme="@style/PreviewStyle">
+		</activity>
+		<activity android:name="org.jastrzab.move.Images"
+			android:label="@string/select_image_title"
+			android:icon="@drawable/app_icon"
+			android:launchMode="singleTop"
+			android:excludeFromRecents="true"
+			android:configChanges="keyboardHidden|orientation">
+		</activity>
+		<activity android:name="org.jastrzab.move.Events"
+			android:label="@string/view_logs_title"
+			android:icon="@drawable/app_icon"
+			android:launchMode="singleTop"
+			android:excludeFromRecents="true"
+			android:configChanges="keyboardHidden|orientation">
+		</activity>
+		<!-- <activity android:name="org.jastrzab.stabilty.stacktrace.ExceptionActivity"
+			android:process=":stacktrace"
+			android:label="@string/error_name"
+			android:icon="@drawable/ic_error"
+			android:theme="@style/AplicationStyle"
+			android:launchMode="singleTop"
+			android:configChanges="keyboardHidden|orientation">
+		</activity> -->
+		<service android:name="org.jastrzab.move.Engine"
+			android:label="@string/app_name"
+			android:icon="@drawable/app_icon">
+		</service>
+	</application>
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-feature android:name="android.hardware.camera"
+		android:required="false"/>
+	<supports-screens android:smallScreens="true"
+		android:normalScreens="true"
+		android:largeScreens="true"
+		android:anyDensity="true"/>
+	<uses-sdk android:minSdkVersion="8"
+		android:targetSdkVersion="11"/>
+</manifest>

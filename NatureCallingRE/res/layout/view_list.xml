@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<ListView android:id="@+id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:dividerHeight="1dp"
+		android:fadingEdge="none"/>
+	<TextView android:id="@+id/empty"
+		android:singleLine="true"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:ellipsize="marquee"
+		android:textSize="16dp"
+		android:padding="20dp"
+		android:gravity="center"
+		android:text="@string/empty_list"/>
+</LinearLayout>

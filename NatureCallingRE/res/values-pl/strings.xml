@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Wykrywacz Ruchu</string>
+	<string name="error_name">Wystąpił błąd</string>
+	<string name="preview_name">Podgląd</string>
+
+	<string name="ok">OK</string>
+	<string name="cancel">Anuluj</string>
+	<string name="please_wait">Proszę czekać</string>
+
+	<string name="haze_delete_del_id">delete_dialog</string>
+	<string name="delete_title">Usunąć</string>
+	<string name="delete_question">Usunąć wszystko ?</string>
+
+	<string name="detect_switch_title">Wykrywacz</string>
+	<string name="camera_number_title">Kamera</string>
+	<string name="camera_number_info">Wybierz którą kamera me użyć program, przednią lub tylną</string>
+	<string name="camera_numberRear">Tylna</string>
+	<string name="camera_numberFront">Przednia</string>
+	<string name="start_delay_title">Opóźnienie</string>
+	<string name="start_delay_info">Program czeka zanim zacznie skanowanie</string>
+	<string name="start_delayNull">Nie czekaj</string>
+	<string name="start_delayOne">1 sekundę</string>
+	<string name="start_delayFive">5 sekund</string>
+	<string name="start_delayTen">10 sekund</string>
+	<string name="start_delayFivten">15 sekund</string>
+	<string name="start_delayThirty">30 sekund</string>
+	<string name="start_delayMinute">1 minuta</string>
+	<string name="start_delayFiveMinute">5 minut</string>
+
+	<string name="threshold_title">Czułości</string>
+	<string name="threshold_info">Poziom czułości</string>
+	<string name="threshold_input_ok">OK</string>
+	<string name="threshold_input_cancel">Anuluj</string>
+
+	<string name="select_threshold_title">Czułość</string>
+	<string name="select_threshold_info">Ustaw poziom czułości detektora</string>
+
+	<string name="detector_on">Wykrywacz włączony</string>
+	<string name="detector_not_on">Wykrywacz nie włączony, wystąpił błąd</string>
+	<string name="detector_off">Wykrywacz wyłączony</string>
+
+	<string name="save_frame_title">Obraz</string>
+	<string name="save_frame_info">Zapisz do pliku obrazu zarejestrowanego w momencie wykrycia ruchu</string>
+	<string name="play_signal_title">Sygnał</string>
+	<string name="play_signal_info">Włącz krótki sygnał dźwiękowy w momencie wykrycia ruchu</string>
+
+	<string name="frame_count_title">Liczba</string>
+	<string name="frame_count_info">Ile klatek ma zostać zarejestrowane</string>
+	<string name="frame_countOne">1 klatkę</string>
+	<string name="frame_countTwo">2 klatki</string>
+	<string name="frame_countTre">3 klatki</string>
+	<string name="frame_countFour">4 klatki</string>
+	<string name="frame_countFive">5 klatki</string>
+
+	<string name="signal_sound_title">Dźwięk</string>
+	<string name="signal_sound_info">Wybierz jaki dźwięk ma być odtwarzany w momencie wykrycia ruchu</string>
+	<string name="signal_selector">Wybierz dźwięk</string>
+
+	<string name="detect_group">Detekcja</string>
+	<string name="frame_group">Rejestracja</string>
+	<string name="signal_group">Sygnalizacja</string>
+	<string name="logs_group">Zdarzenia</string>
+
+	<string name="other_group">Inne</string>
+	<string name="wait_next_title">Czekaj</string>
+	<string name="wait_next_info">Po wykryciu ruchu czekaj z kontynuacją skanowania</string>
+
+	<string name="about_title">O programie</string>
+
+	<string name="index_galery_title">Galeria</string>
+	<string name="index_galery_info">Zapisaną klatkę dodaj do galerii, może opóźnić zapis kolejnych klatek</string>
+
+	<string name="show_preview_title">Podgląd</string>
+	<string name="show_preview_info">Pokaz to co rejestruje kamera</string>
+
+	<string name="detector_sensitivity_low">Niski</string>
+	<string name="detector_sensitivity_medium">Średni</string>
+	<string name="detector_sensitivity_high">Wysoki</string>
+	<string name="detector_sensitivity_very_high">Ekstremalny</string>
+
+	<string name="select_image_title">Obrazy</string>
+	<string name="delete_menu">Usuń</string>
+	<string name="empty_list">Pusta lista</string>
+	<string name="events_counter"> zdarzeń</string>
+
+	<string name="save_logs_title">Zdarzenie</string>
+	<string name="save_logs_info">Dodaj zdarzenie w przypadku wykrycia ruchu</string>
+	<string name="view_logs_title">Zdarzenia</string>
+
+	<string name="event_datatime_format">dd MMMMM HH:mm:ss</string>
+	<string name="image_datatime_format">dd MMMMM HH:mm:ss</string>
+
+	<string name="send_using">Wyślij używając</string>
+	<string name="open_using">Otwórz używając</string>
+
+	<string name="save_menu">Zapisz</string>
+
+	<string name="save_events_title">Wybierz folder</string>
+
+	<string name="save_events_ok">Zapisane poprawnie</string>
+	<string name="save_events_fail">Wystąpił błąd</string>
+
+	<string name="auto_start_title">Autostart</string>
+	<string name="auto_start_info">Wykrywacza będzie uruchamiany automatycznie wraz z programem</string>
+
+	<string name="delete_on_start_title">Usuń</string>
+	<string name="delete_on_start_info">Usuń dziennik podczas każdego startu wykrywacza</string>
+
+	<string name="image_list_count_separator">z</string>
+
+</resources>

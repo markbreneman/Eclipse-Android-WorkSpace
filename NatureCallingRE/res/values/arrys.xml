@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<array name="camera_numberEntries">
+		<item>@string/camera_numberRear</item>
+		<item>@string/camera_numberFront</item>
+	</array>
+	<string-array name="camera_numberValuses">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+	<array name="start_delayEntries">
+		<item>@string/start_delayFive</item>
+		<item>@string/start_delayTen</item>
+		<item>@string/start_delayFivten</item>
+		<item>@string/start_delayThirty</item>
+		<item>@string/start_delayMinute</item>
+		<item>@string/start_delayFiveMinute</item>
+	</array>
+	<string-array name="start_delayValuses">
+		<item>5</item>
+		<item>10</item>
+		<item>15</item>
+		<item>30</item>
+		<item>60</item>
+		<item>300</item>
+	</string-array>
+	<array name="frame_countEntries">
+		<item>@string/frame_countOne</item>
+		<item>@string/frame_countTwo</item>
+		<item>@string/frame_countTre</item>
+		<item>@string/frame_countFour</item>
+		<item>@string/frame_countFive</item>
+	</array>
+	<string-array name="frame_countValuses">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+	</string-array>
+	<array name="wait_nextEntries">
+		<item>@string/start_delayNull</item>
+		<item>@string/start_delayOne</item>
+		<item>@string/start_delayFive</item>
+		<item>@string/start_delayTen</item>
+		<item>@string/start_delayFivten</item>
+		<item>@string/start_delayThirty</item>
+		<item>@string/start_delayMinute</item>
+		<item>@string/start_delayFiveMinute</item>
+	</array>
+	<string-array name="wait_nextValuses">
+		<item>0</item>
+		<item>1</item>
+		<item>5</item>
+		<item>10</item>
+		<item>15</item>
+		<item>30</item>
+		<item>60</item>
+		<item>300</item>
+	</string-array>
+</resources>

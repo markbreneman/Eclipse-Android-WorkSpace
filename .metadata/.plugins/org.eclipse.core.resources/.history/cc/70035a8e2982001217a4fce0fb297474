@@ -1,0 +1,217 @@
+package org.jastrzab.move;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import org.me.about.dialog.About;
+import org.me.constant.Constant;
+import org.me.core.RepeatTask;
+import org.me.media.FrameSaver;
+import org.me.options.widget.DetectionPreference;
+import org.me.options.widget.SwitchPreference;
+import org.me.preview.camera.CameraWindow;
+
+/**
+ *
+ * @author Jastrzab
+ */
+public class Main extends PreferenceActivity implements Constant, SwitchPreference.SwitchInterface, Active.ActiveChaged, Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+
+	private static final int RING_TONE_PICK = 0x1;
+	private Active mActive;
+	private SwitchPreference mSwitch;
+	private DetectionPreference mDetector;
+	private CheckBoxPreference mSignal;
+	private Preference mSound;
+	private CheckBoxPreference mFrame;
+	private Preference mCount;
+	private CheckBoxPreference mIndex;
+	private DetectorRefresh mDetectorRefresh;
+	private Preference mImages;
+	private CheckBoxPreference mEvent;
+	private Preference mEvents;
+	private CheckBoxPreference mDelete;
+	private boolean isStop = true;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.options);
+		isStop = true;
+		mDetectorRefresh = new DetectorRefresh(null);
+		mActive = new Active(Main.this);
+		mSwitch = (SwitchPreference) findPreference("detectSwitch");
+		mSwitch.setInsterface(Main.this);
+		mDetector = (DetectionPreference) findPreference("detectView");
+		mSignal = (CheckBoxPreference) findPreference("play_signal");
+		mSignal.setOnPreferenceChangeListener(Main.this);
+		mSound = findPreference("selectSound");
+		mSound.setOnPreferenceClickListener(Main.this);
+		mFrame = (CheckBoxPreference) findPreference("save_frame");
+		mFrame.setOnPreferenceChangeListener(Main.this);
+		mCount = findPreference("frame_count");
+		mIndex = (CheckBoxPreference) findPreference("index_galery");
+		mImages = findPreference("selectImage");
+		mImages.setOnPreferenceClickListener(Main.this);
+		mEvents = findPreference("viewLogs");
+		mEvents.setOnPreferenceClickListener(Main.this);
+		mEvent = (CheckBoxPreference) findPreference("save_logs");
+		mEvent.setOnPreferenceChangeListener(Main.this);
+		mDelete = (CheckBoxPreference) findPreference("delete_on_start");
+		findPreference("wait_next").setOnPreferenceChangeListener(Main.this);
+		CameraWindow.clearEvents();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Main.this);
+		mActive.registerReceiver(Main.this);
+		setEnabled(Engine.isWorking());
+		mDetectorRefresh.start(500, 100);
+		mDetector.setThreshold(preferences.getInt(CONFIG_NAME_THRESHOLD, THRESHOLD_DEFAULT));
+		mSwitch.updateState();
+		if (isStop && !Engine.isWorking() && preferences.getBoolean(CONFIG_NAME_AUTO_START, false)) {
+			startService(Active.getServiceIntent(Main.this, Bundle.EMPTY));
+			setEnabled(true);
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mDetectorRefresh.stop();
+		mActive.removeReceiver(Main.this);
+		if (isFinishing()) {
+			isStop = true;
+		} else {
+			isStop = false;
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.about_menu:
+				new About(Main.this).show(Main.this);
+			return true;
+			default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	public void onSwitchChanged(boolean value) {
+		startService(Active.getServiceIntent(Main.this, Bundle.EMPTY));
+		setEnabled(value);
+	}
+
+	public void onActiveChange() {
+		mSwitch.updateState();
+	}
+
+	private void setEnabled(boolean value) {
+		if (value) {
+			mSignal.setEnabled(false);
+			mFrame.setEnabled(false);
+			mSound.setEnabled(false);
+			mCount.setEnabled(false);
+			mIndex.setEnabled(false);
+			mImages.setEnabled(false);
+			mEvents.setEnabled(false);
+			mEvent.setEnabled(false);
+			mDelete.setEnabled(false);
+		} else {
+			mSignal.setEnabled(true);
+			mFrame.setEnabled(FrameSaver.mediaMount());
+			mSound.setEnabled(mSignal.isChecked());
+			mCount.setEnabled(mFrame.isChecked());
+			mIndex.setEnabled(mFrame.isChecked());
+			mImages.setEnabled(true);
+			mEvents.setEnabled(true);
+			mEvent.setEnabled(true);
+			mDelete.setEnabled(mEvent.isChecked());
+		}
+	}
+
+	public boolean onPreferenceClick(Preference preference) {
+		if (preference.getKey().equals("selectSound")) {
+			Intent ringIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+			ringIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+			ringIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.signal_selector));
+			ringIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+			String setRingtone = preference.getSharedPreferences().getString(CONFIG_NAME_SIGNAL_SOUND, null);
+			if (setRingtone != null) {
+				ringIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(setRingtone));
+			} else {
+				ringIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+			}
+			startActivityForResult(ringIntent, RING_TONE_PICK);
+		} else if (preference.getKey().equals("selectImage")) {
+			startActivity(new Intent(Main.this, Images.class));
+		} else if (preference.getKey().equals("viewLogs")) {
+			startActivity(new Intent(Main.this, Events.class));
+		}
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RING_TONE_PICK && data != null) {
+			Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+			Editor editTonePath = PreferenceManager.getDefaultSharedPreferences(Main.this).edit();
+			if (uri != null) {
+				editTonePath.putString(CONFIG_NAME_SIGNAL_SOUND, uri.toString());
+			} else {
+				editTonePath.remove(CONFIG_NAME_SIGNAL_SOUND);
+			}
+			editTonePath.commit();
+		}
+	}
+
+	public boolean onPreferenceChange(Preference preference, Object value) {
+		if (preference.getKey().equals("play_signal")) {
+			mSound.setEnabled((Boolean) value && !Engine.isWorking());
+		} else if (preference.getKey().equals("save_frame")) {
+			mCount.setEnabled((Boolean) value && !Engine.isWorking());
+			mIndex.setEnabled((Boolean) value && !Engine.isWorking());
+		} else if (preference.getKey().equals("wait_next")) {
+			if (Engine.isWorking()) {
+				startService(Active.getWaitIntent(Main.this, Integer.valueOf((String) value)));
+			}
+		} else if (preference.getKey().equals("save_logs")) {
+			mDelete.setEnabled((Boolean) value && !Engine.isWorking());
+		}
+		return true;
+	}
+
+	private class DetectorRefresh extends RepeatTask<Object> {
+
+		public DetectorRefresh(Object object) {
+			super(object);
+		}
+
+		@Override
+		protected void execute(Object view) {
+			mDetector.setPercent(CameraWindow.getPercent(), CameraWindow.getEvents());
+		}
+
+	}
+
+}

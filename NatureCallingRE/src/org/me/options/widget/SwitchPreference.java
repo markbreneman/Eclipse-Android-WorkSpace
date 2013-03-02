@@ -1,0 +1,72 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.me.options.widget;
+
+import android.content.Context;
+import android.content.Intent;
+import android.preference.Preference;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.CompoundButton;
+import org.jastrzab.move.Active;
+import org.jastrzab.move.Detector;
+import org.jastrzab.move.Engine;
+import com.naturecalling.R;
+
+
+public class SwitchPreference extends Preference implements CompoundButton.OnCheckedChangeListener {
+
+	private CompoundButton mButton;
+	private SwitchInterface mInterface = null;
+
+	public SwitchPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		setWidgetLayoutResource(R.layout.detect_switch);
+	}
+
+	public void setInsterface(SwitchInterface switchInterface) {
+		mInterface = switchInterface;
+	}
+
+	@Override
+	protected void onBindView(View view) {
+		super.onBindView(view);
+		mButton = (CompoundButton) view.findViewById(R.id.detect_switch_preview);
+		if (mButton != null) {
+			switch (Engine.getState()) {
+				case Active.SERVICE_CHANGING:
+					mButton.setEnabled(false);
+				break;
+				case Active.SERVICE_ENABLED:
+				case Active.SERVICE_DISABLED:
+					mButton.setEnabled(true);
+				break;
+			}
+			mButton.setChecked(Engine.isWorking());
+			mButton.setOnCheckedChangeListener(SwitchPreference.this);
+		}
+	}
+
+	@Override
+	protected void onClick() {
+		getContext().startActivity(new Intent(getContext(), Detector.class));
+	}
+
+	public void onCheckedChanged(CompoundButton button, boolean value) {
+		mButton.setEnabled(false);
+		mInterface.onSwitchChanged(value);
+	}
+
+	public void updateState() {
+		notifyChanged();
+	}
+
+	public interface SwitchInterface {
+
+		void onSwitchChanged(boolean value);
+
+	}
+
+}

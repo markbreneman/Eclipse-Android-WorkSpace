@@ -17,10 +17,10 @@ public abstract class Preferences {
     public static boolean USE_STATE = false;
 
     // Which photos to save
-    public static boolean SAVE_PREVIOUS = false;
+    public static boolean SAVE_PREVIOUS = true;
     public static boolean SAVE_ORIGINAL = true;
-    public static boolean SAVE_CHANGES = true;
+    public static boolean SAVE_CHANGES = false;
 
     // Time between saving photos
-    public static int PICTURE_DELAY = 10000;
+    public static int PICTURE_DELAY = 3000;
 }

@@ -2,7 +2,6 @@ package com.jwetherell.motion_detection.data;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
 /**
  * This class is used to store global data.
  * 

@@ -1,0 +1,164 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.me.options.widget;
+
+import android.content.Context;
+import android.content.SharedPreferences.Editor;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import org.jastrzab.move.Active;
+import org.jastrzab.move.Engine;
+import com.naturecalling.R;
+import org.me.constant.Constant;
+
+
+public class DetectionPreference extends Preference implements Constant, TresholdSelector.TresholdSelectorCallback {
+
+	private int mValue = 0;
+	private int mCount = 0;
+	private int mMax = 100;
+	private ProgressBar mPercent;
+	private ProgressBar mWait;
+	private TextView mEvents;
+
+	public DetectionPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		setLayoutResource(R.layout.detector_view);
+	}
+
+	@Override
+	protected void onBindView(View view) {
+		super.onBindView(view);
+		mPercent = (ProgressBar) view.findViewById(R.id.detector_percent);
+		mWait = (ProgressBar) view.findViewById(R.id.detector_wait);
+		mEvents = (TextView) view.findViewById(R.id.count);
+		setPercent(mValue, mCount);
+		setThreshold(mMax);
+	}
+
+	@Override
+	protected void onClick() {
+		TresholdSelector treshold = new TresholdSelector(getContext(), DetectionPreference.this);
+		treshold.setTreshold(PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(CONFIG_NAME_THRESHOLD, THRESHOLD_DEFAULT));
+		treshold.show();
+	}
+
+	public void setThreshold(int max) {
+		mMax = max;
+		if (mPercent != null) {
+			mPercent.setMax(mMax);
+		}
+	}
+
+	public void setPercent(int percent, int count) {
+		mValue = percent;
+		mCount = count;
+		if (mPercent != null) {
+			if (mValue == 100) {
+				if (mPercent.getVisibility() == View.VISIBLE) {
+					mPercent.setVisibility(View.GONE);
+					mWait.setVisibility(View.VISIBLE);
+				}
+			} else {
+				if (mWait.getVisibility() == View.VISIBLE) {
+					mWait.setVisibility(View.GONE);
+					mPercent.setVisibility(View.VISIBLE);
+				}
+				mPercent.setProgress(mValue);
+			}
+			mEvents.setTextKeepState(String.valueOf(mCount));
+		}
+	}
+
+	public void onCancel(TresholdSelector dialog) {
+
+	}
+
+	public void onOk(TresholdSelector dialog, int threshold) {
+		setThreshold(threshold);
+		Editor edit = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+		edit.putInt(CONFIG_NAME_THRESHOLD, threshold);
+		edit.commit();
+		if (Engine.isWorking()) {
+			getContext().startService(Active.getTresholdIntent(getContext(), threshold));
+		}
+	}
+
+	@Override
+	protected Parcelable onSaveInstanceState() {
+		final Parcelable superState = super.onSaveInstanceState();
+		if (isPersistent()) {
+			return superState;
+		}
+		final SavedState myState = new SavedState(superState);
+		myState.mValue = mValue;
+		myState.mCount = mCount;
+		myState.mMax = mMax;
+		return myState;
+	}
+
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		if (!state.getClass().equals(SavedState.class)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
+		SavedState myState = (SavedState) state;
+		super.onRestoreInstanceState(myState.getSuperState());
+		mValue = myState.mValue;
+		mCount = myState.mCount;
+		mMax = myState.mMax;
+		notifyChanged();
+	}
+
+	private static class SavedState extends BaseSavedState {
+
+		private int mValue;
+		private int mCount;
+		private int mMax;
+
+		public SavedState(Parcel source) {
+			super(source);
+			mValue = source.readInt();
+			mCount = source.readInt();
+			mMax = source.readInt();
+		}
+
+
+		@Override public void writeToParcel(Parcel dest, int flags) {
+			super.writeToParcel(dest, flags);
+			dest.writeInt(mValue);
+			dest.writeInt(mCount);
+			dest.writeInt(mMax);
+		}
+
+
+		public SavedState(Parcelable superState) {
+			super(superState);
+		}
+
+		public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+
+			public SavedState createFromParcel(Parcel in) {
+				return new SavedState(in);
+			}
+
+
+			public SavedState[] newArray(int size) {
+				return new SavedState[size];
+			}
+
+		};
+
+	}
+
+}

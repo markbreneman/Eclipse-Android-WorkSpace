@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://schemas.android.com/apk/res/android" uri="www.website-unavailable.com/.wc_EWJmHRd6BB5fAhZuBwkH_url_schemas.android.com/apk/res/android"/>
+    <system systemId="http://schemas.android.com/apk/res/de.ankri" uri="schemas.android.com/apk/res/de.ankri"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.views" uri="schemas.android.com/apk/res/org.jastrzab.views"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab." uri="schemas.android.com/apk/res/org.jastrzab"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.m" uri="schemas.android.com/apk/res/org.jastrzab.m"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.mop" uri="schemas.android.com/apk/res/org.jastrzab.mop"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.mopv" uri="schemas.android.com/apk/res/org.jastrzab.mopv"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.mopve" uri="schemas.android.com/apk/res/org.jastrzab.mopve"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.mo" uri="schemas.android.com/apk/res/org.jastrzab.mo"/>
+    <system systemId="http://schemas.android.com/apk/res/org.jastrzab.move" uri="schemas.android.com/apk/res/org.jastrzab.move"/>
+</catalog>

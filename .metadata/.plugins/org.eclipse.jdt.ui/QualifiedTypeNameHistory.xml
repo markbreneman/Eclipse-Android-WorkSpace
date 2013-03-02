@@ -4,7 +4,6 @@
 <fullyQualifiedTypeName name="android.widget.EditText"/>
 <fullyQualifiedTypeName name="android.annotation.SuppressLint"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="com.example.week2_switchingviews.R.id"/>
 <fullyQualifiedTypeName name="com.example.week2_switchingviews.R.layout"/>
@@ -14,7 +13,6 @@
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
 <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
 <fullyQualifiedTypeName name="android.provider.MediaStore"/>
-<fullyQualifiedTypeName name="android.R"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="android.content.pm.ActivityInfo"/>
 <fullyQualifiedTypeName name="android.content.res.Configuration"/>
@@ -36,4 +34,8 @@
 <fullyQualifiedTypeName name="android.hardware.Camera"/>
 <fullyQualifiedTypeName name="android.R.id"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="android.media.MediaScannerConnection"/>
+<fullyQualifiedTypeName name="android.media.MediaScannerConnection.OnScanCompletedListener"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
 </qualifiedTypeNameHistroy>

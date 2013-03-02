@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/detect_group">
+		<org.me.options.widget.SwitchPreference
+			android:key="detectSwitch"
+			android:title="@string/detect_switch_title"
+			android:icon="@drawable/ic_tab_selected_all"/>
+		<org.me.options.widget.DetectionPreference
+			android:key="detectView"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/frame_group">
+		<CheckBoxPreference android:key="save_frame"
+			android:defaultValue="false"
+			android:title="@string/save_frame_title"
+			android:summary="@string/save_frame_info"/>
+		<ListPreference android:key="frame_count"
+			android:defaultValue="1"
+			android:title="@string/frame_count_title"
+			android:summary="@string/frame_count_info"
+			android:entries="@array/frame_countEntries"
+			android:entryValues="@array/frame_countValuses"/>
+		<CheckBoxPreference android:key="index_galery"
+			android:defaultValue="false"
+			android:title="@string/index_galery_title"
+			android:summary="@string/index_galery_info"/>
+		<Preference android:key="selectImage"
+			android:title="@string/select_image_title"
+			android:icon="@drawable/storage_icon"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/signal_group">
+		<CheckBoxPreference android:key="play_signal"
+			android:defaultValue="true"
+			android:title="@string/play_signal_title"
+			android:summary="@string/play_signal_info"/>
+		<Preference android:key="selectSound"
+			android:title="@string/signal_sound_title"
+			android:summary="@string/signal_sound_info"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/logs_group">
+		<CheckBoxPreference android:key="save_logs"
+			android:defaultValue="false"
+			android:title="@string/save_logs_title"
+			android:summary="@string/save_logs_info"/>
+		<CheckBoxPreference android:key="delete_on_start"
+			android:defaultValue="true"
+			android:title="@string/delete_on_start_title"
+			android:summary="@string/delete_on_start_info"/>
+		<Preference android:key="viewLogs"
+			android:title="@string/view_logs_title"
+			android:icon="@drawable/storage_icon"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/other_group">
+		<ListPreference android:key="wait_next"
+			android:defaultValue="0"
+			android:title="@string/wait_next_title"
+			android:summary="@string/wait_next_info"
+			android:entries="@array/wait_nextEntries"
+			android:entryValues="@array/wait_nextValuses"/>
+		<CheckBoxPreference android:key="auto_start"
+			android:defaultValue="false"
+			android:title="@string/auto_start_title"
+			android:summary="@string/auto_start_info"/>
+	</PreferenceCategory>
+</PreferenceScreen>

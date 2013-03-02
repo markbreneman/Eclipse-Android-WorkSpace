@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="?android:attr/listPreferredItemHeight"
+	android:gravity="center_vertical"
+	android:paddingRight="?android:attr/scrollbarSize"
+	android:paddingLeft="10dp">
+	<ImageView android:src="@drawable/ic_settings_battery"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"/>
+	<RelativeLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="15dip"
+		android:layout_marginRight="6dip"
+		android:layout_marginTop="6dip"
+		android:layout_marginBottom="6dip"
+		android:layout_weight="1">
+		<include android:id="@+id/slider" layout="@layout/progress_bar"/>
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/slider"
+			android:layout_alignLeft="@id/slider">
+			<TextView android:id="@+id/count"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				style="@style/Events"
+				android:singleLine="true"/>
+			<TextView android:text="@string/events_counter"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				style="@style/Summary"
+				android:singleLine="true"/>
+		</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

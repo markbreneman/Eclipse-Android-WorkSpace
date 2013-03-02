@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="dialog_background">#95FFFFFF</color>
+	<color name="dialog_dim_foreground_dark">#bebebe</color>
+	<color name="dialog_dim_foreground_dark_inverse">#323232</color>
+	<color name="dialog_dim_foreground_dark_disabled">#80bebebe</color>
+</resources>

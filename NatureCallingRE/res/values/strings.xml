@@ -1,0 +1,111 @@
+<resources>
+	<string name="app_name">Motion Detector</string>
+	<string name="error_name">Error occurred</string>
+	<string name="preview_name">Preview</string>
+
+	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
+	<string name="please_wait">Please wait</string>
+
+	<string name="haze_delete_del_id">delete_dialog</string>
+	<string name="delete_title">Delete</string>
+	<string name="delete_question">Delete all ?</string>
+
+	<string name="detect_switch_title">Detector</string>
+	<string name="camera_number_title">Camera</string>
+	<string name="camera_number_info">Select which camera to use, front or rear</string>
+	<string name="camera_numberRear">Back</string>
+	<string name="camera_numberFront">Front</string>
+	<string name="start_delay_title">Delay</string>
+	<string name="start_delay_info">Program waits with start of scanning</string>
+	<string name="start_delayNull">Do not wait</string>
+	<string name="start_delayOne">1 second</string>
+	<string name="start_delayFive">5 seconds</string>
+	<string name="start_delayTen">10 seconds</string>
+	<string name="start_delayFivten">15 seconds</string>
+	<string name="start_delayThirty">30 seconds</string>
+	<string name="start_delayMinute">1 minutes</string>
+	<string name="start_delayFiveMinute">5 minutes</string>
+
+	<string name="threshold_title">Sensitivity</string>
+	<string name="threshold_info">Level of sensitivity</string>
+	<string name="threshold_input_ok">OK</string>
+	<string name="threshold_input_cancel">Cancel</string>
+
+	<string name="select_threshold_title">Sensitivity</string>
+	<string name="select_threshold_info">Adjust detector sensitivity</string>
+
+	<string name="detector_on">Detector enabled</string>
+	<string name="detector_not_on">Detector disabled an error occurred</string>
+	<string name="detector_off">Detector disabled</string>
+
+	<string name="save_frame_title">Picture</string>
+	<string name="save_frame_info">Save image captured when motion is detected</string>
+	<string name="play_signal_title">Signal</string>
+	<string name="play_signal_info">Enable beep when motion is detected</string>
+
+	<string name="frame_count_title">Count</string>
+	<string name="frame_count_info">How many frames should be registered</string>
+	<string name="frame_countOne">1 frame</string>
+	<string name="frame_countTwo">2 frames</string>
+	<string name="frame_countTre">3 frames</string>
+	<string name="frame_countFour">4 frames</string>
+	<string name="frame_countFive">5 frames</string>
+
+	<string name="signal_sound_title">Sound</string>
+	<string name="signal_sound_info">Choose which sound you want to play when motion is detected</string>
+	<string name="signal_selector">Select a sound</string>
+
+	<string name="detect_group">Detection</string>
+	<string name="frame_group">Register</string>
+	<string name="signal_group">Signaling</string>
+	<string name="logs_group">Events</string>
+
+	<string name="other_group">Other</string>
+	<string name="wait_next_title">Wait</string>
+	<string name="wait_next_info">When motion is detected waits with scanning</string>
+
+	<string name="about_title">About</string>
+
+	<string name="index_galery_title">Gallery</string>
+	<string name="index_galery_info">Saved frame add to gallery, it may delay frames recording</string>
+
+	<string name="show_preview_title">Preview</string>
+	<string name="show_preview_info">Show what camera is recording</string>
+
+	<string name="detector_sensitivity_low">Low</string>
+	<string name="detector_sensitivity_medium">Medium</string>
+	<string name="detector_sensitivity_high">High</string>
+	<string name="detector_sensitivity_very_high">Extreme</string>
+
+	<string name="select_image_title">Pictures</string>
+	<string name="delete_menu">Delete</string>
+	<string name="empty_list">Empty list</string>
+	<string name="events_counter"> events</string>
+
+	<string name="save_logs_title">Event</string>
+	<string name="save_logs_info">Save event log when motion is detected</string>
+	<string name="view_logs_title">Events</string>
+
+	<string name="event_datatime_format">MMMMM dd HH:mm:ss</string>
+	<string name="image_datatime_format">MMMMM dd HH:mm:ss</string>
+
+	<string name="send_using">Send using</string>
+	<string name="open_using">Open using</string>
+
+	<string name="save_menu">Save</string>
+
+	<string name="save_events_title">Select folder</string>
+
+	<string name="save_events_ok">Saved properly</string>
+	<string name="save_events_fail">Error occurred</string>
+
+	<string name="auto_start_title">Autostart</string>
+	<string name="auto_start_info">Detector will be activated automatically during program start</string>
+
+	<string name="delete_on_start_title">Delete</string>
+	<string name="delete_on_start_info">Delete logs during each detector start</string>
+
+	<string name="image_list_count_separator">of</string>
+
+</resources>

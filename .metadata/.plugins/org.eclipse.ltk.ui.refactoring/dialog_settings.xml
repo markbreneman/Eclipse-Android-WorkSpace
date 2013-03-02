@@ -12,4 +12,8 @@
 	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 	</section>
+	<section name="RefactoringWizard.AndroidPackageNameRefactoring">
+		<item value="642" key="height"/>
+		<item value="600" key="width"/>
+	</section>
 </section>

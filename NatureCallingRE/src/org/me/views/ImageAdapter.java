@@ -1,0 +1,152 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.me.views;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import com.naturecalling.R;
+import org.me.image.constant.ImageConstant;
+import org.me.image.holders.WorkHolder;
+import org.me.image.icons.ImageMatcher;
+import org.me.image.templates.DataCache;
+/**
+ *
+ * @author Jastrzab
+ */
+public class ImageAdapter extends BaseAdapter implements ImageConstant {
+
+	private static final String PATTERN = "[0-9]+\\_([0-9]+)\\_([0-9]+)\\.[a-z]+";
+	private Context mContext;
+	private static final SimpleDateFormat mDateFormat = new SimpleDateFormat();
+	private LayoutInflater mInflater;
+	private int mCount = 0;
+	private float mSize;
+	private final List<File> mFiles = new ArrayList<File>();
+	private final DataCache<Bitmap> mCache = new DataCache<Bitmap>();
+	private String mFormat;
+	private Bitmap mIconDefault;
+	private Pattern mPattern;
+
+	public ImageAdapter(Context context) {
+		mContext = context;
+		mInflater = LayoutInflater.from(context);
+		mSize = (context.getResources().getDisplayMetrics().density * 72f);
+		mFormat = context.getText(R.string.image_datatime_format).toString();
+		if (mIconDefault == null) {
+			mIconDefault = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_settings_storage_large);
+		}
+		mPattern = Pattern.compile(PATTERN);
+	}
+
+	public void updateList(String folder) {
+		mCache.clear();
+		mFiles.clear();
+		try {
+			File[] array = new File(folder).listFiles(mDefaultFilter);
+			if (array != null) {
+				mFiles.addAll(Arrays.asList(array));
+				Collections.sort(mFiles, mDefaultSort);
+			}
+		} catch (Exception e) {
+			Log.d("ImageAdapter", "Listing File Fail " + e.getLocalizedMessage());
+		}
+		mCount = mFiles.size();
+		notifyDataSetChanged();
+	}
+
+	public void clearList() {
+		mCache.clear();
+		mFiles.clear();
+	}
+
+	public float getMaxSize() {
+		return mSize;
+	}
+
+	public int getCount() {
+		return mCount;
+	}
+
+	public boolean isList() {
+		return mCount > 0;
+	}
+
+	public File getItem(int position) {
+		return mFiles.get(position);
+	}
+
+	public long getItemId(int position) {
+		return position;
+	}
+
+	public class ViewHolder {
+		TextView title;
+		ImageView image;
+		TextView count;
+		TextView total;
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder;
+		if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.view_item, null);
+			holder = new ViewHolder();
+			holder.title = (TextView) convertView.findViewById(R.id.title);
+			holder.image = (ImageView) convertView.findViewById(R.id.image);
+			holder.count = (TextView) convertView.findViewById(R.id.count);
+			holder.total = (TextView) convertView.findViewById(R.id.total);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		File file = mFiles.get(position);
+		if (file != null) {
+			holder.title.setText(formatDate(file.lastModified(), mFormat));
+			Matcher matcher = mPattern.matcher(file.getName());
+			if (matcher.find()) {
+				holder.count.setText(matcher.replaceAll("$1"));
+				holder.total.setText(matcher.replaceAll("$2"));
+			} else {
+				holder.count.setText("1");
+				holder.total.setText("1");
+			}
+			if (mCache.containsKey(file.getPath())) {
+				holder.image.setImageBitmap(mCache.get(file.getPath()));
+			} else {
+				try {
+					ImageMatcher imageMatcher = new ImageMatcher(holder.image, mCache);
+					holder.image.setImageDrawable(new WorkHolder(imageMatcher, mContext.getResources(), mIconDefault));
+					imageMatcher.execute(file.getPath(), mSize);
+				} catch (RejectedExecutionException e) {
+					Log.d(LOG, "Rejected Execution");
+				}
+			}
+		}
+		return convertView;
+	}
+
+	public static String formatDate(long data, String format) {
+		mDateFormat.applyLocalizedPattern(format);
+		return mDateFormat.format(data);
+	}
+
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<ListPreference android:key="camera_number"
+		android:defaultValue="0"
+		android:title="@string/camera_number_title"
+		android:summary="@string/camera_number_info"
+		android:entries="@array/camera_numberEntries"
+		android:entryValues="@array/camera_numberValuses"/>
+	<ListPreference android:key="start_delay"
+		android:defaultValue="5"
+		android:title="@string/start_delay_title"
+		android:summary="@string/start_delay_info"
+		android:entries="@array/start_delayEntries"
+		android:entryValues="@array/start_delayValuses"/>
+	<Preference android:key="selectThreshold"
+		android:title="@string/select_threshold_title"
+		android:summary="@string/select_threshold_info"/>
+	<Preference android:key="showPreview"
+		android:title="@string/show_preview_title"
+		android:summary="@string/show_preview_info"/>
+</PreferenceScreen>

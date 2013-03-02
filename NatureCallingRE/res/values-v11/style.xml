@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="AplicationStyle" parent="android:style/Theme.Holo.Light">
+	</style>
+	<style name="Dialog" parent="android:style/Theme.Holo.Light.Dialog">
+	</style>
+	<style name="DialogText" parent="@android:style/TextAppearance.Small">
+	</style>
+	<style name="InfoText" parent="@android:style/TextAppearance.Small">
+	</style>
+	<style name="PreviewStyle" parent="android:style/Theme.Holo.Light">
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowFullscreen">true</item>
+	</style>
+	<style name="Title" parent="@android:style/TextAppearance.Medium">
+	</style>
+	<style name="Summary" parent="@android:style/TextAppearance.Small">
+		<item name="android:textColor">?android:attr/textColorSecondary</item>
+	</style>
+	<style name="Events" parent="@android:style/TextAppearance.Small">
+		<item name="android:textColor">?android:attr/textColorSecondary</item>
+	</style>
+	<style name="ImageTitle" parent="@android:style/TextAppearance.Medium">
+	</style>
+</resources>

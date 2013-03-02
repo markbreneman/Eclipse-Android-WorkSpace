@@ -1,0 +1,289 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.jastrzab.move;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.List;
+import org.me.constant.Constant;
+import org.me.database.Database;
+//import org.me.file.selector.SelectorCallback;
+import org.me.image.constant.ImageImplements;
+import org.me.options.widget.TresholdSelector;
+import org.me.views.EventsAdapter;
+import org.me.views.Haze;
+import org.me.views.Select;
+
+/**
+ *
+ * @author Jastrzab
+ */
+public class Events extends Activity implements Constant, Haze.HazeCallback, AdapterView.OnItemClickListener {
+
+	private static final int SAVE_FOLDER_SELECTOR = 0x1;
+	private EventsAdapter mAdapter;
+	private Database mDatabase;
+	private MenuItem mDelete;
+	private MenuItem mSave;
+	private Deleting mDeleting;
+	private Saveing mSaveing;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.view_list);
+		mDatabase = new Database(Events.this);
+		mAdapter = new EventsAdapter(Events.this);
+		ListView list = (ListView) findViewById(R.id.list);
+		list.setAdapter(mAdapter);
+		list.setEmptyView(findViewById(R.id.empty));
+		list.setOnItemClickListener(Events.this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mDatabase.onCreate();
+		mAdapter.updateList(mDatabase);
+		setEnabledMenu(mAdapter.isList());
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mAdapter.clearList();
+		mDatabase.onDestroy();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_events, menu);
+		mDelete = menu.findItem(R.id.delete_menu);
+		mSave = menu.findItem(R.id.save_menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if ((mDeleting != null && mDeleting.isRunning()) || (mSaveing != null && mSaveing.isRunning())) {
+			mDelete.setEnabled(false);
+			mSave.setEnabled(false);
+		} else {
+			setEnabledMenu(mAdapter.isList());
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.delete_menu:
+					Haze haze = new Haze(Events.this, R.string.haze_delete_del_id, R.string.delete_title, R.string.delete_question, Events.this);
+					haze.deploy(R.string.ok, R.string.cancel);
+				return true;
+			case R.id.save_menu:
+//				new Select(Events.this, Events.this).deploy(SAVE_FOLDER_SELECTOR);
+				return true;
+			default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	public void onPositive(int id) {
+		if (mDeleting == null) {
+			mDeleting = new Deleting(Events.this);
+		}
+		mDeleting.execute();
+	}
+
+	public void onNegative(int id) {
+
+	}
+
+	public void onItemsSelected(int id, List<File> list, Context cntxt, LinearLayout ll) {
+		switch (id) {
+			case SAVE_FOLDER_SELECTOR:
+				if (mSaveing == null) {
+					mSaveing = new Saveing(Events.this);
+				}
+				mSaveing.execute(list.get(0));
+			break;
+		}
+	}
+
+	public void onNothingSelected(int id, Context cntxt, LinearLayout ll) {
+		
+	}
+
+	public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+		Cursor cursor = (Cursor) adapter.getItemAtPosition(position);
+		if (cursor != null) {
+			try {
+				StringBuilder builder = new StringBuilder();
+				builder.append(EventsAdapter.formatDate(cursor.getLong(cursor.getColumnIndex(Database.DATA_COLUMN)), getText(R.string.event_datatime_format).toString()));
+				builder.append(COMMA);
+				builder.append(TresholdSelector.translateProgress(Events.this, Math.abs(cursor.getInt(cursor.getColumnIndex(Database.THRESHOLD_COLUMN)) - 50)));
+				ImageImplements.sendWith(Events.this, builder.toString());
+			} catch (Exception e) {
+				Log.d(LOG, "Send Event Fail " + e.getLocalizedMessage());
+			}
+		}
+	}
+
+	private final class Deleting {
+
+		private volatile boolean mRunning = false;
+		private Context mContext;
+		private Delete mDelete;
+
+		public Deleting(Context context) {
+			mContext = context;
+		}
+
+		public synchronized void execute() {
+			if (mRunning) {
+				return;
+			}
+			mRunning = true;
+			mDelete = new Delete();
+			mDelete.execute();
+		}
+
+		public boolean isRunning() {
+			return mRunning;
+		}
+
+		private final class Delete extends AsyncTask<Object, Integer, Object> {
+
+			private ProgressDialog mDialog;
+
+			@Override
+			protected void onPreExecute() {
+				setEnabledMenu(false);
+				mDialog = new ProgressDialog(mContext);
+				mDialog.setCancelable(false);
+				mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				mDialog.setMessage(getText(R.string.please_wait));
+				mDialog.show();
+			}
+
+			@Override
+			protected Object doInBackground(Object... arg0) {
+				try {
+					mDatabase.deleteAll();
+				} catch (Exception e) {
+					Log.d(LOG, "Deleting Events Fail " + e.getLocalizedMessage());
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Object object) {
+				mRunning = false;
+				mDialog.dismiss();
+				mAdapter.updateList(mDatabase);
+				setEnabledMenu(mAdapter.isList());
+			}
+
+		}
+
+	}
+
+	private final class Saveing {
+
+		private volatile boolean mRunning = false;
+		private Context mContext;
+		private Save mSave;
+
+		public Saveing(Context context) {
+			mContext = context;
+		}
+
+		public synchronized void execute(File folder) {
+			if (mRunning) {
+				return;
+			}
+			mRunning = true;
+			mSave = new Save();
+			mSave.execute(folder);
+		}
+
+		public boolean isRunning() {
+			return mRunning;
+		}
+
+		private final class Save extends AsyncTask<File, Integer, Boolean> {
+
+			private ProgressDialog mDialog;
+
+			@Override
+			protected void onPreExecute() {
+				setEnabledMenu(false);
+				mDialog = new ProgressDialog(mContext);
+				mDialog.setCancelable(false);
+				mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				mDialog.setMessage(getText(R.string.please_wait));
+				mDialog.show();
+			}
+
+			@Override
+			protected Boolean doInBackground(File... folder) {
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter(new File(folder[0], String.valueOf(System.currentTimeMillis()).concat(DUMP_LOGS_EXT)), true);
+					return mDatabase.saveDatabase(Events.this, writer, getText(R.string.event_datatime_format).toString());
+				} catch (Exception e) {
+					Log.d(LOG, "Saveing Events Fail " + e.getLocalizedMessage());
+				} finally {
+					if (writer != null) {
+						try {
+							writer.close();
+						} catch (Exception e) {
+							Log.d(LOG, "Fail To Close File " + e.getLocalizedMessage());
+						}
+					}
+				}
+				return false;
+			}
+
+			@Override
+			protected void onPostExecute(Boolean sukces) {
+				mRunning = false;
+				mDialog.dismiss();
+				setEnabledMenu(mAdapter.isList());
+				Toast.makeText(getApplicationContext(), sukces ? R.string.save_events_ok : R.string.save_events_fail, Toast.LENGTH_SHORT).show();
+			}
+
+		}
+
+	}
+
+	private void setEnabledMenu(boolean enabled) {
+		if (mDelete != null) {
+			mDelete.setEnabled(enabled);
+		}
+		if (mSave != null) {
+			mSave.setEnabled(enabled);
+		}
+	}
+
+}

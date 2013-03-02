@@ -4,18 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.jwetherell.motion_detection.data.GlobalData;
-import com.jwetherell.motion_detection.data.Preferences;
-import com.jwetherell.motion_detection.detection.AggregateLumaMotionDetection;
-import com.jwetherell.motion_detection.detection.IMotionDetection;
-import com.jwetherell.motion_detection.detection.LumaMotionDetection;
-import com.jwetherell.motion_detection.detection.RgbMotionDetection;
-import com.jwetherell.motion_detection.image.ImageProcessing;
-
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +17,14 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.jwetherell.motion_detection.data.GlobalData;
+import com.jwetherell.motion_detection.data.Preferences;
+import com.jwetherell.motion_detection.detection.AggregateLumaMotionDetection;
+import com.jwetherell.motion_detection.detection.IMotionDetection;
+import com.jwetherell.motion_detection.detection.LumaMotionDetection;
+import com.jwetherell.motion_detection.detection.RgbMotionDetection;
+import com.jwetherell.motion_detection.image.ImageProcessing;
 
 
 /**
@@ -44,6 +46,7 @@ public class MotionDetectionActivity extends SensorsActivity {
 
     private static volatile AtomicBoolean processing = new AtomicBoolean(false);
 
+    
     /**
      * {@inheritDoc}
      */
@@ -87,6 +90,9 @@ public class MotionDetectionActivity extends SensorsActivity {
         inPreview = false;
         camera.release();
         camera = null;
+        
+      //Update the gallery - mb;
+        this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
     }
 
     /**
@@ -95,7 +101,6 @@ public class MotionDetectionActivity extends SensorsActivity {
     @Override
     public void onResume() {
         super.onResume();
-
         camera = Camera.open();
     }
 
@@ -210,7 +215,7 @@ public class MotionDetectionActivity extends SensorsActivity {
                     img = ImageProcessing.decodeYUV420SPtoLuma(data, width, height);
                 }
                 // long aConversion = System.currentTimeMillis();
-                // Log.d(TAG, "Converstion="+(aConversion-bConversion));
+                // Log.d(TAG, "Conversion="+(aConversion-bConversion));
 
                 // Current frame (without changes)
                 int[] org = null;
@@ -218,10 +223,8 @@ public class MotionDetectionActivity extends SensorsActivity {
 
                 if (img != null && detector.detect(img, width, height)) {
                     // The delay is necessary to avoid taking a picture while in
-                    // the
-                    // middle of taking another. This problem can causes some
-                    // phones
-                    // to reboot.
+                    // the middle of taking another. This problem can causes some
+                    // phones to reboot.
                     long now = System.currentTimeMillis();
                     if (now > (mReferenceTime + Preferences.PICTURE_DELAY)) {
                         mReferenceTime = now;
@@ -247,6 +250,7 @@ public class MotionDetectionActivity extends SensorsActivity {
                         Log.i(TAG, "Saving.. previous=" + previous + " original=" + original + " bitmap=" + bitmap);
                         Looper.prepare();
                         new SavePhotoTask().execute(previous, original, bitmap);
+                        
                     } else {
                         Log.i(TAG, "Not taking picture because not enough time has passed since the creation of the Surface");
                     }
@@ -259,11 +263,11 @@ public class MotionDetectionActivity extends SensorsActivity {
             // Log.d(TAG, "END PROCESSING...");
 
             processing.set(false);
+            
         }
     };
 
     private static final class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
-
         /**
          * {@inheritDoc}
          */
@@ -274,20 +278,27 @@ public class MotionDetectionActivity extends SensorsActivity {
                 String name = String.valueOf(System.currentTimeMillis());
                 if (bitmap != null) save(name, bitmap);
             }
-            return 1;
+            return 1;      
+            
         }
 
         private void save(String name, Bitmap bitmap) {
             File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
+            
+            
             if (photo.exists()) photo.delete();
-
+            
             try {
                 FileOutputStream fos = new FileOutputStream(photo.getPath());
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.close();
+                Log.v("Saving", "SavedPhoto");
+                
             } catch (java.io.IOException e) {
                 Log.e("PictureDemo", "Exception in photoCallback", e);
             }
         }
     }
 }
+
+	

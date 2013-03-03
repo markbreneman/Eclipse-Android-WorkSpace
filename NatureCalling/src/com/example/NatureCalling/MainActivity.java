@@ -112,6 +112,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onResume() {
 	    super.onResume();
 	    camera = Camera.open();
+	    
+	    
 	}
 
 	//GET THE BEST PREVIEW SIZE FOR THE PHONE
@@ -167,6 +169,9 @@ public class MainActivity extends Activity implements OnClickListener {
                camera.setPreviewDisplay(surfaceHolder);
                //CALL PREVIEW CALL BACK
                camera.setPreviewCallback(previewCallback);
+               
+//               
+               
            } catch (Throwable t) {
                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
            }
@@ -176,13 +181,29 @@ public class MainActivity extends Activity implements OnClickListener {
        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
            Camera.Parameters parameters = camera.getParameters();
            Camera.Size size = getBestPreviewSize(width, height, parameters);
+           try{
+           if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
+				
+				parameters.set("orientation", "portrait");
+				
+				camera.setDisplayOrientation(90);
+			}
+			else{
+				parameters.set("orientation", "landscape");
+				camera.setDisplayOrientation(0);
+			}
+         
            if (size != null) {
                parameters.setPreviewSize(size.width, size.height);
                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
            }
            camera.setParameters(parameters);
            camera.startPreview();
-           inPreview = true;
+           inPreview = true;}
+           catch(IOException exception){
+   			camera.release();
+   			Log.v("MainActivity", exception.getMessage());
+   		}
        }
 
        @Override
@@ -211,7 +232,7 @@ public class MainActivity extends Activity implements OnClickListener {
     	   //WHAT IS THIS ABOUT ...?
            if (!processing.compareAndSet(false, true)) return;
 
-            Log.d(TAG, "BEGIN PROCESSING...");
+//            Log.d(TAG, "BEGIN PROCESSING...");
             
            try {
                // PREVIOUS FRAME
@@ -277,7 +298,7 @@ public class MainActivity extends Activity implements OnClickListener {
            } finally {
            processing.set(false);
            }
-           Log.d(TAG, "ENDED PROCESSING...");
+//           Log.d(TAG, "ENDED PROCESSING...");
            processing.set(false);      
        }
    };	

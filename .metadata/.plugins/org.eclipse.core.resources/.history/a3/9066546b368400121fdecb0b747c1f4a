@@ -181,29 +181,17 @@ public class MainActivity extends Activity implements OnClickListener {
        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
            Camera.Parameters parameters = camera.getParameters();
            Camera.Size size = getBestPreviewSize(width, height, parameters);
-           try{
-           if(MainActivity.this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
-				
-				parameters.set("orientation", "portrait");	
-				camera.setDisplayOrientation(90);
-			}
-			else{
-				parameters.set("orientation", "landscape");
-				camera.setDisplayOrientation(0);
-			}
+          
          
            if (size != null) {
                parameters.setPreviewSize(size.width, size.height);
                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+           }
            camera.setParameters(parameters);
            camera.startPreview();
-           inPreview = true;}
+           inPreview = true;
            }
-           finally{
-          			
-          		}        	   
-           }
-       
+          
 
        @Override
        public void surfaceDestroyed(SurfaceHolder holder) {

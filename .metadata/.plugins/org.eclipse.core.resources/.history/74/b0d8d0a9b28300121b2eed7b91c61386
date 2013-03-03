@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <FrameLayout 
+        android:id="@+id/FrameLayout01" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content">
+
+        <SurfaceView
+            android:id="@+id/CameraView"
+            android:layout_width="322dp"
+            android:layout_height="392dp" >
+
+        </SurfaceView>
+   
+    </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+        
+            <TextView
+                android:id="@+id/CountDownTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-300dp"
+                android:text="" >
+
+			</TextView>
+		
+			<Button
+	           android:id="@+id/button1"
+	           style="?android:attr/buttonStyleSmall"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:text="Settings" 
+	           android:onClick="settingsClicked"/>
+	
+	        <Button
+	            android:id="@+id/CountDownButton"
+	            android:layout_width="136dp"
+	            android:layout_height="70dp"
+	            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+	            android:text="Start Timer" />
+        LinearLayout/>
+
+        
+
+</LinearLayout> 

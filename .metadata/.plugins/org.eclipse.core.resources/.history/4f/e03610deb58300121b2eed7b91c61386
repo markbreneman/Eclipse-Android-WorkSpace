@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:weight_sum="1" >
+    
+    <FrameLayout 
+        android:id="@+id/FrameLayout01" 
+        android:layout_width="match_parent" 
+        android:layout_height="0dp"
+        android:layout_weight=".8" >
+
+
+        <SurfaceView
+            android:id="@+id/CameraView"
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent">
+        </SurfaceView>
+   
+    </FrameLayout>
+
+    <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal" 
+            android:layout_weight=".2" >
+        
+            <TextView
+                android:id="@+id/CountDownTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-250dp"
+                android:text="" >
+			</TextView>
+
+            <Button
+                android:id="@+id/button1"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-250dp"
+                android:onClick="settingsClicked"
+                android:text="Settings" />
+	
+	        <Button
+	            android:id="@+id/CountDownButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"	         
+	            android:text="Start Timer" />
+	        
+     </LinearLayout>
+     
+</LinearLayout> 

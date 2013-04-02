@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="45" key="DIALOG_Y_ORIGIN"/>
-		<item value="670" key="DIALOG_X_ORIGIN"/>
+		<item value="33" key="DIALOG_Y_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
+		<item value="1172" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="wrap"/>
-		<item value="true" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="parameters" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
+			<item value="toast"/>
+			<item value="button"/>
+			<item value="setting"/>
+			<item value="start"/>
+			<item value="start()"/>
+			<item value="onCreate"/>
 			<item value="parameters"/>
 			<item value="open"/>
-			<item value="camera.open"/>
-			<item value="Camera.open"/>
-			<item value="processing"/>
-			<item value="Shawn"/>
-			<item value="WHAT IS THIS ABOUT ...?"/>
-			<item value="computing"/>
 		</list>
 		<list key="replacehistory">
 			<item value="previewHolder"/>

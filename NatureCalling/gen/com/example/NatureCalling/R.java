@@ -11,6 +11,7 @@ public final class R {
     public static final class attr {
     }
     public static final class dimen {
+        public static final int TextSizeStartStopButton=0x7f040002;
         /**  Default screen margins, per the Android Design guidelines. 
 
          Customize dimensions originally defined in res/values/dimens.xml (such as
@@ -25,7 +26,6 @@ public final class R {
     }
     public static final class id {
         public static final int CameraView=0x7f080001;
-        public static final int CountDownButton=0x7f080005;
         public static final int CountDownTextView=0x7f080003;
         public static final int FrameLayout01=0x7f080000;
         public static final int LinearLayout01=0x7f080002;
@@ -39,6 +39,7 @@ public final class R {
         public static final int button1=0x7f080004;
         public static final int checkBox1=0x7f080010;
         public static final int seekBar1=0x7f080009;
+        public static final int startStopButton=0x7f080005;
         public static final int textView1=0x7f080006;
         public static final int textView2=0x7f080007;
         public static final int textView3=0x7f080008;

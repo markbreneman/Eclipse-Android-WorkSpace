@@ -19,8 +19,21 @@
   </FrameLayout>
   
   <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="match_parent" android:layout_height="0dp" android:orientation="horizontal" android:layout_weight=".1">
-    w<TextView android:id="@+id/CountDownTextView" android:layout_width="fill_parent" android:layout_height="wrap_content"  android:text=""/>
+  
+      <TextView
+          android:id="@+id/CountDownTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="-30dp" />
+
     <Button android:id="@+id/button1" style="?android:attr/buttonStyleSmall" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="-250dp" android:onClick="settingsClicked" android:text="Settings"/>
-    <Button android:id="@+id/CountDownButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Start Motion Detection"/>
+
+    <Button
+        android:id="@+id/startStopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Motion Detection"
+        android:textSize="@dimen/TextSizeStartStopButton" />
+
   </LinearLayout>
 </LinearLayout>

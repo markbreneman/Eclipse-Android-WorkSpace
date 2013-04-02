@@ -60,7 +60,7 @@
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_weight="0.03" >
+        android:layout_weight="0.00" >
 
         <TextView
             android:id="@+id/TextView03"

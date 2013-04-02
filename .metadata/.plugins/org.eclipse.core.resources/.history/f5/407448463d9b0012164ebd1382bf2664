@@ -1,0 +1,435 @@
+package com.example.NatureCalling;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.prefs.Preferences;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
+import android.hardware.Camera.PreviewCallback;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore.Images.Media;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
+
+import com.example.NatureCalling.Preferences;
+
+public class MainActivity extends Activity implements OnClickListener {
+	
+	private static final String TAG = "MotionDetectionActivity";
+	
+	SurfaceView cameraView;
+	SurfaceHolder surfaceHolder;
+	Camera camera;
+	boolean inPreview = false;
+	private static volatile AtomicBoolean processing = new AtomicBoolean(false);
+	private static long mReferenceTime = 0;
+	private static IMotionDetection detector = null;
+	
+	Button startStopButton;
+	TextView countdownTextView;
+	
+	boolean motionDetectionSwitch = false;
+	public static boolean tookPhoto = false;
+	public static final int configuration= 0;
+	
+	public static ArrayList<String> listOfPhotosTaken = new ArrayList();
+	
+	TelephonyManager tm;
+	public static String mydeviceId;
+	public static String lat;
+	public static String lon;
+	
+	
+	//WHEN THE APP STARTS
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+        TelephonyManager tm = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
+
+	
+	    cameraView = (SurfaceView) this.findViewById(R.id.CameraView);
+		surfaceHolder = cameraView.getHolder();
+		surfaceHolder.addCallback(surfaceCallback);
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		
+		//OPEN UP PREFERENCE AND DETERMINE WHICH DETECTOR TYPE TO USE
+		if (Preferences.USE_RGB){ 
+	            detector = new RGBMotionDetection();
+	        } else if (Preferences.USE_LUMA) {
+	            detector = new LumaMotionDetection();
+	        } else {
+	            // Using State based (aggregate map)
+	            detector = new AggregateLumaMotionDetection();
+	        }
+		
+		
+		//SETUP COUNTDOWNTEXT
+		countdownTextView = (TextView) findViewById(R.id.CountDownTextView);
+		//SETUP STARTBUTTON
+		startStopButton = (Button) findViewById(R.id.startStopButton);
+		startStopButton.setOnClickListener(this);
+		//SETUP HANDLER FOR TIMER
+//		timerUpdateHandler = new Handler();
+		
+		//SETUP DATA PROPERTIES FOR UDID
+		((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        final String DeviceId, SerialNum, androidId;
+         DeviceId = tm.getDeviceId();
+         mydeviceId = DeviceId;
+         Log.v("My Id", "Android DeviceId is: " +DeviceId); 
+         
+         //Toast Took Photo
+         if(tookPhoto){
+         Toast photoSave = Toast.makeText(this, "Saved Photo", Toast.LENGTH_SHORT);
+ 		 photoSave.show();
+ 		   }
+	}
+	
+	//DECLARE FUNCTION FOR WHAT HAPPENS ON CONFIGURATION CHANGES ex. screen rotation.
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+	
+	//WHEN THE USER LEAVES THE SPECIFIED ACTIVITY
+	@Override
+	public void onPause() {
+        super.onPause();
+
+        camera.setPreviewCallback(null);
+        if (inPreview) camera.stopPreview();
+        inPreview = false;
+        camera.release();
+        camera = null;
+        
+      //UPDATE THE GALLERY - mb
+        this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+	}
+	
+	//AFTER THE APP IS LAUNCHED AND STARTED AND 
+	//WHEN COMING BACK FROM PAUSED
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    camera = Camera.open();
+	}
+
+	//GET THE BEST PREVIEW SIZE FOR THE PHONE
+	private static Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
+        Camera.Size result = null;
+        //For the Phone's camera Params get the supported preview sizes
+        //iterate through sizes to get largest supported 
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            if (size.width <= width && size.height <= height) {
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultArea = result.width * result.height;
+                    int newArea = size.width * size.height;
+
+                    if (newArea > resultArea) result = size;
+                }
+            }
+        }
+
+        return result;
+    }
+
+	//CALLBACK INTERFACE USED TO DELIVER COPIES OF PREVIEW FRAMES 
+	//AS THEY ARE DISPLAYED
+	private PreviewCallback previewCallback = new PreviewCallback() {
+
+	    @Override
+	    public void onPreviewFrame(byte[] data, Camera cam) {
+	        if (data == null) return;
+	        Camera.Size size = cam.getParameters().getPreviewSize();
+	        if (size == null) return;
+	        
+	        //THIS IS A CHECK TO MAKE SURE THE PHONE IS NOT IN MOTION
+	        //IT PREVENTS THE PHONE FROM CAPTURING DATA WHEN IN MOTION
+	        //IF THE PHONE IS NOT IN MOTION START A NEW DETECTION THREAD
+	        if (!GlobalData.isPhoneInMotion() & motionDetectionSwitch==true) {
+	            DetectionThread thread = new DetectionThread(data, size.width, size.height);
+	            thread.start();
+	        }
+	    }
+	};
+
+	//CALLBACK INTERFACE TO RECEIVE INFORMATION ABOUT 
+	//CHANGES TO THE SURFACE HOLDER 
+	
+	private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+
+       @Override
+       public void surfaceCreated(SurfaceHolder holder) {
+           try {
+        	   //SET CAMERA TO DISPLAY SURFACE HOLDER
+               camera.setPreviewDisplay(surfaceHolder);
+               //CALL PREVIEW CALL BACK
+               camera.setPreviewCallback(previewCallback);  
+               
+           } catch (Throwable t) {
+               Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
+           }
+       }
+
+       @Override
+       public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+           Camera.Parameters parameters = camera.getParameters();
+           Camera.Size size = getBestPreviewSize(width, height, parameters);
+           try{
+           if(MainActivity.this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
+				
+				parameters.set("orientation", "portrait");	
+				camera.setDisplayOrientation(90);
+			}
+			else{
+				parameters.set("orientation", "landscape");
+				camera.setDisplayOrientation(0);
+			}
+         
+           if (size != null) {
+               parameters.setPreviewSize(size.width, size.height);
+               Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+           camera.setParameters(parameters);
+           camera.startPreview();
+           inPreview = true;}
+           }
+           finally{
+          			
+          		}        	   
+           }
+       
+
+       @Override
+       public void surfaceDestroyed(SurfaceHolder holder) {
+       	//NOTHING NEED TO HAPPEN HERE YET.
+       }
+   };
+   
+   //CLASS FOR DETECTION
+   private static final class DetectionThread extends Thread {
+
+       private byte[] data;
+       private int width;
+       private int height;
+
+       public DetectionThread(byte[] data, int width, int height) {
+           this.data = data;
+           this.width = width;
+           this.height = height;
+       }
+       
+       //START THE IMAGE PROCESSING ROUTINE
+       @Override
+       public void run() {
+    	   
+    	   //WHAT IS THIS ABOUT ...?
+           if (!processing.compareAndSet(false, true)) return;
+
+//            Log.d(TAG, "BEGIN PROCESSING...");
+            
+           try {
+               // PREVIOUS FRAME
+               int[] pre = null;
+               if (Preferences.SAVE_PREVIOUS) pre = detector.getPrevious();
+
+               int[] img = null;
+               // DETERMIN HOW TO HANDLE DATA:
+               // RGB OR LUMA BASED OFF PREFERENCE.
+               
+               if (Preferences.USE_RGB) {
+                   img = ImageProcessing.decodeYUV420SPtoRGB(data, width, height);
+               } else {
+                   img = ImageProcessing.decodeYUV420SPtoLuma(data, width, height);
+               }
+      
+               int[] org = null;
+               
+               
+               if (Preferences.SAVE_ORIGINAL && img != null) org = img.clone();
+               //CLONE THE IMAGE & NAME IT ORG
+               
+               //IF THERE IS AN IMAGE AND DETECTION IS CALLED CHECK TIME BETWEEN
+               if (img != null && detector.detect(img, width, height)) {
+                   // The delay is necessary to avoid taking a picture while in
+                   // the middle of taking another. This problem can causes some
+                   // phones to reboot.
+                   long now = System.currentTimeMillis();
+                   if (now > (mReferenceTime + Preferences.PICTURE_DELAY)) {
+                       mReferenceTime = now;//Last picture time.
+
+                       Bitmap previous = null;
+                       if (Preferences.SAVE_PREVIOUS && pre != null) {
+                           if (Preferences.USE_RGB) previous = ImageProcessing.rgbToBitmap(pre, width, height);
+                           else previous = ImageProcessing.lumaToGreyscale(pre, width, height);
+                       }
+
+                       Bitmap original = null;
+                       if (Preferences.SAVE_ORIGINAL && org != null) {
+                           if (Preferences.USE_RGB) original = ImageProcessing.rgbToBitmap(org, width, height);
+                           else original = ImageProcessing.lumaToGreyscale(org, width, height);
+                       }
+
+                       Bitmap bitmap = null;
+                       if (Preferences.SAVE_CHANGES && img != null) {
+                           if (Preferences.USE_RGB) bitmap = ImageProcessing.rgbToBitmap(img, width, height);
+                           else bitmap = ImageProcessing.lumaToGreyscale(img, width, height);
+                       }
+
+                       Log.i(TAG, "Saving.. previous=" + previous + " original=" + original + " bitmap=" + bitmap);
+                       
+                       //How does this Looper thing Work? - Shawn
+                       Looper.prepare();
+                       //CALL THE SAVE PHOTO FUNCTION
+                       new SavePhotoTask().execute(previous, original, bitmap);
+                       
+                   } else {
+                       Log.i(TAG, "Not taking picture because not enough time has passed since the creation of the Surface");
+                   }
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           } finally {
+           processing.set(false);
+           }
+//           Log.d(TAG, "ENDED PROCESSING...");
+           processing.set(false);      
+       }
+   };	
+
+   
+   //How does this AsyncTask Work? - Shawn
+   //How does do in backgroundwork? - Shawn
+   private static final class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
+      
+       @Override
+       protected Integer doInBackground(Bitmap... data) {
+    	   
+           for (int i = 0; i < data.length; i++) {
+               Bitmap bitmap = data[i];
+               ///THIS IS WHERE THE FILE NAME IS SET
+               String name = String.valueOf(mydeviceId+"_"+System.currentTimeMillis());
+               
+               if (bitmap != null) save(name, bitmap);
+           }
+           return 1;      
+           
+       }
+
+       private void save(String name, Bitmap bitmap) {
+           File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
+           listOfPhotosTaken.add(name);
+           
+//           StringBuilder sb = new StringBuilder();
+//           for (String s : listOfPhotosTaken)
+//           {
+//               sb.append(s);
+//               sb.append("\t");
+//           }
+//         Log.d("PhotoNameArray",sb.toString());
+           
+           
+           if (photo.exists()) photo.delete();
+           
+           try {
+        	 
+               
+               FileOutputStream fos = new FileOutputStream(photo.getPath());
+               bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+               fos.close();
+             //THIS IS WHERE THE UDID GETS ADDED TO BITMAP -EXIF DATA TAGS
+               ExifInterface ei = new ExifInterface(photo.getPath());
+               ei.setAttribute(ExifInterface.TAG_MAKE, mydeviceId);
+               ei.saveAttributes();
+              
+               Log.v("Saving", "SavedPhoto");
+
+               
+               tookPhoto=!tookPhoto;
+               
+               
+           } catch (java.io.IOException e) {
+               Log.e("PictureDemo", "Exception in photoCallback", e);
+           }
+       }
+   }
+	
+	public void onClick(View v) {
+
+		if(!motionDetectionSwitch){
+			startStopButton.setText("Stop Motion Detection");
+//			timerUpdateHandler.post(timerUpdateTask);
+			motionDetectionSwitch =true;
+		} else {
+			startStopButton.setText("Start Motion Detection");
+//			timerUpdateHandler.removeCallbacks(timerUpdateTask);
+			motionDetectionSwitch =false;
+		}
+	}
+		
+		
+//		if(!timerRunning){
+//			timerRunning = true;
+//			timerUpdateHandler.post(timerUpdateTask);
+//		}
+//	}
+	
+	public void uploadPhotosTaken(){
+		if(listOfPhotosTaken.size()>0 & !motionDetectionSwitch){
+			
+		
+		for (String s : listOfPhotosTaken){
+			}
+		}
+	}
+	//SWITCHING TO SETTINGS
+	public void settingsClicked(View v){
+		Log.v("SettingsClicked","SettingsClicked");	
+		Intent i = new Intent(this,ConfigurationActivity.class);
+//		i.putExtra(MainActivity.PASSING_DATA, "Here is the data I am passing");
+		startActivityForResult(i, configuration);	
+	}
+
+	
+	
+}
+

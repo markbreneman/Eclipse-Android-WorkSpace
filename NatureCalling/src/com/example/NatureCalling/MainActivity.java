@@ -5,9 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 //import java.util.prefs.Preferences;
+import java.net.URL;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -47,8 +51,10 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 
 import com.example.NatureCalling.Preferences;
+import com.example.NatureCalling.Constants;
 
 public class MainActivity extends Activity implements OnClickListener {
+	
 	
 	private static final String TAG = "MotionDetectionActivity";
 	
@@ -60,13 +66,18 @@ public class MainActivity extends Activity implements OnClickListener {
 	private static long mReferenceTime = 0;
 	private static IMotionDetection detector = null;
 	
-	Button startButton;
+	Button startStopButton;
 	TextView countdownTextView;
 	
-	Handler timerUpdateHandler;
-	boolean timerRunning = false;
-	int currentTime = 10;
+	boolean motionDetectionSwitch = false;
+	public static boolean tookPhoto = false;
 	public static final int configuration= 0;
+	
+	public static ArrayList<String> listOfPhotosTaken = new ArrayList();
+	
+	private AmazonS3Client s3Client = new AmazonS3Client(
+			new BasicAWSCredentials(Constants.ACCESS_KEY_ID,
+					Constants.SECRET_KEY));
 	
 	TelephonyManager tm;
 	public static String mydeviceId;
@@ -101,31 +112,24 @@ public class MainActivity extends Activity implements OnClickListener {
 		//SETUP COUNTDOWNTEXT
 		countdownTextView = (TextView) findViewById(R.id.CountDownTextView);
 		//SETUP STARTBUTTON
-		startButton = (Button) findViewById(R.id.CountDownButton);
-		startButton.setOnClickListener(this);
-		//SETUP HANDLER FOR TIMER
-		timerUpdateHandler = new Handler();
+		startStopButton = (Button) findViewById(R.id.startStopButton);
+		startStopButton.setOnClickListener(this);
 		
 		//SETUP DATA PROPERTIES FOR UDID
 		((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         final String DeviceId, SerialNum, androidId;
          DeviceId = tm.getDeviceId();
          mydeviceId = DeviceId;
-//         SerialNum = tm.getSimSerialNumber();
-//         androidId = Secure.getString(getContentResolver(),Secure.ANDROID_ID);
-
-//         UUID deviceUuid = new UUID(androidId.hashCode(), ((long)DeviceId.hashCode() << 32) | SerialNum.hashCode());
-//         String mydeviceId = deviceUuid.toString();	
          Log.v("My Id", "Android DeviceId is: " +DeviceId); 
-//         Log.v("My Id", "Android SerialNum is: " +SerialNum); 
-//         Log.v("My Id", "Android androidId is: " +androidId); 
-         //LATITUDE LONGITUDE INFORMATION...not yet resolved
-//         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-//         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//         double longitude = location.getLongitude();
-//         double latitude = location.getLatitude();
-//         String lat=String.valueOf(latitude);
-//         String lon=String.valueOf(longitude);
+         
+         //Toast Took Photo
+         if(tookPhoto){
+         Toast photoSave = Toast.makeText(this, "Saved Photo", Toast.LENGTH_SHORT);
+ 		 photoSave.show();
+ 		   }
+         
+//     	s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
+         
 	}
 	
 	//DECLARE FUNCTION FOR WHAT HAPPENS ON CONFIGURATION CHANGES ex. screen rotation.
@@ -155,8 +159,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onResume() {
 	    super.onResume();
 	    camera = Camera.open();
-	    
-	    
 	}
 
 	//GET THE BEST PREVIEW SIZE FOR THE PHONE
@@ -193,7 +195,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	        //THIS IS A CHECK TO MAKE SURE THE PHONE IS NOT IN MOTION
 	        //IT PREVENTS THE PHONE FROM CAPTURING DATA WHEN IN MOTION
 	        //IF THE PHONE IS NOT IN MOTION START A NEW DETECTION THREAD
-	        if (!GlobalData.isPhoneInMotion()) {
+	        if (!GlobalData.isPhoneInMotion() & motionDetectionSwitch==true) {
 	            DetectionThread thread = new DetectionThread(data, size.width, size.height);
 	            thread.start();
 	        }
@@ -343,6 +345,7 @@ public class MainActivity extends Activity implements OnClickListener {
        }
    };	
 
+   
    //How does this AsyncTask Work? - Shawn
    //How does do in backgroundwork? - Shawn
    private static final class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
@@ -363,7 +366,22 @@ public class MainActivity extends Activity implements OnClickListener {
 
        private void save(String name, Bitmap bitmap) {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
-            
+           
+           Uri selectedImageUri = Uri.fromFile(photo);
+//           Log.d("URIs", selectedImageUri.toString());
+           
+           listOfPhotosTaken.add(selectedImageUri.toString());
+//           listOfPhotosTaken.add(name);
+           
+//           StringBuilder sb = new StringBuilder();
+//           for (String s : listOfPhotosTaken)
+//           {
+//               sb.append(s);
+//               sb.append("\t");
+//           }
+//         Log.d("PhotoNameArray",sb.toString());
+           
+           
            if (photo.exists()) photo.delete();
            
            try {
@@ -378,6 +396,10 @@ public class MainActivity extends Activity implements OnClickListener {
                ei.saveAttributes();
               
                Log.v("Saving", "SavedPhoto");
+
+               
+               tookPhoto=!tookPhoto;
+               
                
            } catch (java.io.IOException e) {
                Log.e("PictureDemo", "Exception in photoCallback", e);
@@ -386,30 +408,46 @@ public class MainActivity extends Activity implements OnClickListener {
    }
 	
 	public void onClick(View v) {
-		if(!timerRunning){
-			timerRunning = true;
-			timerUpdateHandler.post(timerUpdateTask);
+
+		if(!motionDetectionSwitch){
+			startStopButton.setText("Stop Motion Detection");
+			motionDetectionSwitch =true;
+		} else {
+			startStopButton.setText("Start Motion Detection");
+			motionDetectionSwitch =false;
+//			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+			uploadPhotosTaken();
+			Log.d("calledUploadPhotos", "Zebras");
+			
 		}
 	}
-	
-	
-	private Runnable timerUpdateTask = new Runnable(){
-			public void run(){
-				if(currentTime >1){
-					currentTime--;
-					timerUpdateHandler.postDelayed(timerUpdateTask, 1000);
-					
-//					Toast t = Toast.makeText(MainActivity.this, "Motion Detection will Start in "+Integer.toString(currentTime)+"secs", Toast.LENGTH_LONG);
-//				    ToastExpander.showFor(t, currentTime*1000);
-				}
-				else{
-					timerRunning = false;
-					currentTime = 10;
-				}
-			countdownTextView.setText("Motion Detection will Start in"+currentTime);
+		
+	public void uploadPhotosTaken(){
+		if(listOfPhotosTaken.size()>0 & !motionDetectionSwitch){
+
+//		for (String s : listOfPhotosTaken){
+			// Put the image data into S3.
+			
+			String test = "/storage/sdcard0/1363132241774.jpg";
+			try {
+				// Content type is determined by file extension.
+				PutObjectRequest por = new PutObjectRequest(
+						Constants.getPictureBucket(), Constants.PICTURE_NAME,
+						new java.io.File(test));
+				s3Client.putObject(por);
+			} catch (Exception exception) {
+//				result.setErrorMessage(exception.getMessage());
+				Log.d("setError", exception.toString());
+//				Toast ErrorUpload = Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT);
+//				ErrorUpload.show();
 			}
-    };	
+//		}
+		
+		  Toast sendState = Toast.makeText(this, "WouldBeSending", Toast.LENGTH_SHORT);
+	      sendState.show();
 	
+		}
+	}
 	//SWITCHING TO SETTINGS
 	public void settingsClicked(View v){
 		Log.v("SettingsClicked","SettingsClicked");	

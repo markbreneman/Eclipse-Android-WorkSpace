@@ -14,10 +14,14 @@ import java.net.URL;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
@@ -30,6 +34,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
@@ -52,6 +57,7 @@ import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 
 import com.example.NatureCalling.Preferences;
 import com.example.NatureCalling.Constants;
+
 
 public class MainActivity extends Activity implements OnClickListener {
 	
@@ -121,15 +127,7 @@ public class MainActivity extends Activity implements OnClickListener {
          DeviceId = tm.getDeviceId();
          mydeviceId = DeviceId;
          Log.v("My Id", "Android DeviceId is: " +DeviceId); 
-         
-         //Toast Took Photo
-         if(tookPhoto){
-         Toast photoSave = Toast.makeText(this, "Saved Photo", Toast.LENGTH_SHORT);
- 		 photoSave.show();
- 		   }
-         
-//     	s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
-         
+        
 	}
 	
 	//DECLARE FUNCTION FOR WHAT HAPPENS ON CONFIGURATION CHANGES ex. screen rotation.
@@ -199,6 +197,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	            DetectionThread thread = new DetectionThread(data, size.width, size.height);
 	            thread.start();
 	        }
+	     
 	    }
 	};
 
@@ -246,8 +245,7 @@ public class MainActivity extends Activity implements OnClickListener {
           			
           		}        	   
            }
-       
-
+  
        @Override
        public void surfaceDestroyed(SurfaceHolder holder) {
        	//NOTHING NEED TO HAPPEN HERE YET.
@@ -366,21 +364,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
        private void save(String name, Bitmap bitmap) {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
-           
-           Uri selectedImageUri = Uri.fromFile(photo);
+           String selectedImageFilePath=photo.getAbsolutePath();
+//           Uri selectedImageUri = Uri.fromFile(photo);
 //           Log.d("URIs", selectedImageUri.toString());
            
-           listOfPhotosTaken.add(selectedImageUri.toString());
+//           listOfPhotosTaken.add(selectedImageUri.toString());
 //           listOfPhotosTaken.add(name);
-           
-//           StringBuilder sb = new StringBuilder();
-//           for (String s : listOfPhotosTaken)
-//           {
-//               sb.append(s);
-//               sb.append("\t");
-//           }
-//         Log.d("PhotoNameArray",sb.toString());
-           
+           listOfPhotosTaken.add(selectedImageFilePath);
            
            if (photo.exists()) photo.delete();
            
@@ -396,7 +386,7 @@ public class MainActivity extends Activity implements OnClickListener {
                ei.saveAttributes();
               
                Log.v("Saving", "SavedPhoto");
-
+               
                
                tookPhoto=!tookPhoto;
                
@@ -405,6 +395,14 @@ public class MainActivity extends Activity implements OnClickListener {
                Log.e("PictureDemo", "Exception in photoCallback", e);
            }
        }
+       
+//       protected void onPostExecute() {
+//        	 //Toast Took Photo
+//  	         if(tookPhoto){
+//  	         Toast photoSave = Toast.makeText(MainActivity.this, "Saved Photo", Toast.LENGTH_SHORT);
+//  	 		 photoSave.show();
+//  	 		   }
+//           }
    }
 	
 	public void onClick(View v) {
@@ -416,38 +414,120 @@ public class MainActivity extends Activity implements OnClickListener {
 			startStopButton.setText("Start Motion Detection");
 			motionDetectionSwitch =false;
 //			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
-			uploadPhotosTaken();
 			Log.d("calledUploadPhotos", "Zebras");
 			
-		}
-	}
-		
-	public void uploadPhotosTaken(){
-		if(listOfPhotosTaken.size()>0 & !motionDetectionSwitch){
-
-//		for (String s : listOfPhotosTaken){
-			// Put the image data into S3.
+			for (String s : listOfPhotosTaken){
+				
+				Uri selectedImage = Uri.parse(s);
 			
-			String test = "/storage/sdcard0/1363132241774.jpg";
+				new S3PutObjectTask().execute(selectedImage);	
+		}
+	  }
+	}
+	
+	private class S3PutObjectTask extends AsyncTask<Uri, Void, S3TaskResult> {
+
+		ProgressDialog dialog;
+
+		protected void onPreExecute() {
+			dialog = new ProgressDialog(MainActivity.this);
+			dialog.setMessage("Uploading");
+			dialog.setCancelable(false);
+			dialog.show();
+		}
+
+		protected S3TaskResult doInBackground(String... filepath) {
+
+//			if (uris == null || uris.length != 1) {
+//				return null;
+//			}
+//
+//			// The file location of the image selected.
+//			Uri selectedImage = uris[0];
+//
+//			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//
+//			Cursor cursor = getContentResolver().query(selectedImage,
+//					filePathColumn, null, null, null);
+//			cursor.moveToFirst();
+//
+//			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String filePath = filepath[0];
+//			cursor.close();
+
+			S3TaskResult result = new S3TaskResult();
+
+			// Put the image data into S3.
 			try {
+				s3Client.createBucket(Constants.getPictureBucket());
+
 				// Content type is determined by file extension.
 				PutObjectRequest por = new PutObjectRequest(
 						Constants.getPictureBucket(), Constants.PICTURE_NAME,
-						new java.io.File(test));
+						new java.io.File(filePath));
 				s3Client.putObject(por);
 			} catch (Exception exception) {
-//				result.setErrorMessage(exception.getMessage());
-				Log.d("setError", exception.toString());
-//				Toast ErrorUpload = Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT);
-//				ErrorUpload.show();
+
+				result.setErrorMessage(exception.getMessage());
 			}
-//		}
-		
-		  Toast sendState = Toast.makeText(this, "WouldBeSending", Toast.LENGTH_SHORT);
-	      sendState.show();
-	
+
+			return result;
+		}
+
+		protected void onPostExecute(S3TaskResult result) {
+
+			dialog.dismiss();
+
+			if (result.getErrorMessage() != null) {
+
+				displayErrorAlert(
+						MainActivity.this
+								.getString(R.string.upload_failure_title),
+						result.getErrorMessage());
+			}
 		}
 	}
+	
+	private class S3TaskResult {
+		String errorMessage = null;
+		Uri uri = null;
+
+		public String getErrorMessage() {
+			return errorMessage;
+		}
+
+		public void setErrorMessage(String errorMessage) {
+			this.errorMessage = errorMessage;
+		}
+
+		public Uri getUri() {
+			return uri;
+		}
+
+		public void setUri(Uri uri) {
+			this.uri = uri;
+		}
+	}	
+
+	protected void displayErrorAlert(String title, String message) {
+
+		AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+		confirm.setTitle(title);
+		confirm.setMessage(message);
+
+		confirm.setNegativeButton(
+				MainActivity.this.getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+
+						MainActivity.this.finish();
+					}
+				});
+
+		confirm.show().show();
+	}
+	
 	//SWITCHING TO SETTINGS
 	public void settingsClicked(View v){
 		Log.v("SettingsClicked","SettingsClicked");	

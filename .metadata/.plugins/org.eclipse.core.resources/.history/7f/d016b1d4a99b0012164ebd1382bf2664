@@ -1,0 +1,30 @@
+upload_failure_titleprivate class S3TaskResult {
+		String errorMessage = null;
+		Uri uri = null;
+
+		public String getErrorMessage() {
+			return errorMessage;
+		}
+
+		public void setErrorMessage(String errorMessage) {
+			this.errorMessage = errorMessage;
+		}
+
+		public Uri getUri() {
+			return uri;
+		}
+
+		public void setUri(Uri uri) {
+			this.uri = uri;
+		}
+	}<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NatureCalling</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_configuration">Configuration</string>
+    <string name="uploading">…Uploading</string>
+    <string name="upload_failure_title">Upload Failed</string>
+
+</resources>

@@ -25,9 +25,8 @@ public class Constants {
     // http://aws.amazon.com/articles/Mobile/4611615499399490
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
-//	public static final String ACCESS_KEY_ID = "CHANGE ME";
-//	public static final String SECRET_KEY = "CHANGE ME";
-
+	public static final String ACCESS_KEY_ID = "CHANGE ME";
+	public static final String SECRET_KEY = "CHANGE ME";
 	
 	public static final String PICTURE_BUCKET = "secondnatureproject";
 	public static final String PICTURE_NAME = "TestingAndroidS3";

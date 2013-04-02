@@ -3,7 +3,7 @@
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
-	<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+	<ProgressBar 
 		style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
 		android:id="@+id/detector_percent"
 		android:layout_width="fill_parent"
@@ -11,7 +11,7 @@
 		android:indeterminateDrawable="@drawable/progress_indeterminate_horizontal_holo"
 		android:progressDrawable="@drawable/progress_horizontal_holo_light"
 		android:visibility="visible"/>
-	<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+	<ProgressBar 
 		style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
 		android:id="@+id/detector_wait"
 		android:layout_width="fill_parent"

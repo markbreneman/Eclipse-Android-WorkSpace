@@ -5,16 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 //import java.util.prefs.Preferences;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +27,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore.Images.Media;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -30,6 +37,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 
 import com.example.NatureCalling.Preferences;
 
@@ -53,12 +68,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	int currentTime = 10;
 	public static final int configuration= 0;
 	
+	TelephonyManager tm;
+	public static String mydeviceId;
+	public static String lat;
+	public static String lon;
+	
+	
 	//WHEN THE APP STARTS
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+        TelephonyManager tm = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
+
 	
 	    cameraView = (SurfaceView) this.findViewById(R.id.CameraView);
 		surfaceHolder = cameraView.getHolder();
@@ -83,6 +105,27 @@ public class MainActivity extends Activity implements OnClickListener {
 		startButton.setOnClickListener(this);
 		//SETUP HANDLER FOR TIMER
 		timerUpdateHandler = new Handler();
+		
+		//SETUP DATA PROPERTIES FOR UDID
+		((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        final String DeviceId, SerialNum, androidId;
+         DeviceId = tm.getDeviceId();
+         mydeviceId = DeviceId;
+//         SerialNum = tm.getSimSerialNumber();
+//         androidId = Secure.getString(getContentResolver(),Secure.ANDROID_ID);
+
+//         UUID deviceUuid = new UUID(androidId.hashCode(), ((long)DeviceId.hashCode() << 32) | SerialNum.hashCode());
+//         String mydeviceId = deviceUuid.toString();	
+         Log.v("My Id", "Android DeviceId is: " +DeviceId); 
+//         Log.v("My Id", "Android SerialNum is: " +SerialNum); 
+//         Log.v("My Id", "Android androidId is: " +androidId); 
+         //LATITUDE LONGITUDE INFORMATION...not yet resolved
+//         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+//         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//         double longitude = location.getLongitude();
+//         double latitude = location.getLatitude();
+//         String lat=String.valueOf(latitude);
+//         String lon=String.valueOf(longitude);
 	}
 	
 	//DECLARE FUNCTION FOR WHAT HAPPENS ON CONFIGURATION CHANGES ex. screen rotation.
@@ -168,9 +211,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	   //SET CAMERA TO DISPLAY SURFACE HOLDER
                camera.setPreviewDisplay(surfaceHolder);
                //CALL PREVIEW CALL BACK
-               camera.setPreviewCallback(previewCallback);
-               
-//               
+               camera.setPreviewCallback(previewCallback);  
                
            } catch (Throwable t) {
                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
@@ -308,10 +349,12 @@ public class MainActivity extends Activity implements OnClickListener {
       
        @Override
        protected Integer doInBackground(Bitmap... data) {
+    	   
            for (int i = 0; i < data.length; i++) {
                Bitmap bitmap = data[i];
-               ///HERE IS WHERE YOU CAN CHANGE FILE NAME
-               String name = String.valueOf(System.currentTimeMillis());
+               ///THIS IS WHERE THE FILE NAME IS SET
+               String name = String.valueOf(mydeviceId+"_"+System.currentTimeMillis());
+               
                if (bitmap != null) save(name, bitmap);
            }
            return 1;      
@@ -320,13 +363,20 @@ public class MainActivity extends Activity implements OnClickListener {
 
        private void save(String name, Bitmap bitmap) {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
-           
+            
            if (photo.exists()) photo.delete();
            
            try {
+        	 
+               
                FileOutputStream fos = new FileOutputStream(photo.getPath());
                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                fos.close();
+             //THIS IS WHERE THE UDID GETS ADDED TO BITMAP -EXIF DATA TAGS
+               ExifInterface ei = new ExifInterface(photo.getPath());
+               ei.setAttribute(ExifInterface.TAG_MAKE, mydeviceId);
+               ei.saveAttributes();
+              
                Log.v("Saving", "SavedPhoto");
                
            } catch (java.io.IOException e) {
@@ -364,7 +414,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void settingsClicked(View v){
 		Log.v("SettingsClicked","SettingsClicked");	
 		Intent i = new Intent(this,ConfigurationActivity.class);
-//		i.putExtra(MainActivity.PASSING_DA, "Here is the data I am passing");
+//		i.putExtra(MainActivity.PASSING_DATA, "Here is the data I am passing");
 		startActivityForResult(i, configuration);	
 	}
 

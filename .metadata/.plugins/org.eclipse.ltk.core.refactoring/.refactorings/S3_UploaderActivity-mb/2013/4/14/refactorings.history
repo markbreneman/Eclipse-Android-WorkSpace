@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.amazonaws.demo.s3uploader&apos; to &apos;com.s3uploadermb&apos;&#x0A;- Original project: &apos;S3_UploaderActivity-mb&apos;&#x0A;- Original element: &apos;S3_UploaderActivity-mb/src/com.amazonaws.demo.s3uploader&apos;&#x0A;- Renamed element: &apos;S3_UploaderActivity-mb/src/com.s3uploadermb&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.amazonaws.demo.s3uploader&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.amazonaws.demo.s3uploader" name="com.s3uploadermb" qualified="false" references="true" stamp="1364826211422" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,9 @@
+# view AndroidManifest.xml #generated:23
+-keep class com.amazonaws.demo.userpreferences.UserActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:22
+-keep class com.amazonaws.demo.userpreferences.UserListActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:13
+-keep class com.amazonaws.demo.userpreferences.UserPreferenceDemoActivity { <init>(...); }
+

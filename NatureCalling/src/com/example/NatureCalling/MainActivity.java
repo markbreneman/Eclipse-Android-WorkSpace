@@ -79,6 +79,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static boolean tookPhoto = false;
 	public static final int configuration= 0;
 	
+	public static ArrayList<String> listOfPhotosNames = new ArrayList();
 	public static ArrayList<String> listOfPhotosTaken = new ArrayList();
 	
 	private AmazonS3Client s3Client = new AmazonS3Client(
@@ -160,7 +161,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	//GET THE BEST PREVIEW SIZE FOR THE PHONE
-	private static Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
+	private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
         Camera.Size result = null;
         //For the Phone's camera Params get the supported preview sizes
         //iterate through sizes to get largest supported 
@@ -253,7 +254,7 @@ public class MainActivity extends Activity implements OnClickListener {
    };
    
    //CLASS FOR DETECTION
-   private static final class DetectionThread extends Thread {
+    class DetectionThread extends Thread {
 
        private byte[] data;
        private int width;
@@ -346,7 +347,7 @@ public class MainActivity extends Activity implements OnClickListener {
    
    //How does this AsyncTask Work? - Shawn
    //How does do in backgroundwork? - Shawn
-   private static final class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
+    class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
       
        @Override
        protected Integer doInBackground(Bitmap... data) {
@@ -364,19 +365,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
        private void save(String name, Bitmap bitmap) {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
-           String selectedImageFilePath=photo.getAbsolutePath();
-//           Uri selectedImageUri = Uri.fromFile(photo);
-//           Log.d("URIs", selectedImageUri.toString());
-           
-//           listOfPhotosTaken.add(selectedImageUri.toString());
-//           listOfPhotosTaken.add(name);
+           String selectedImageFilePath=photo.getAbsolutePath();           
+           Uri selectedImageUri = Uri.fromFile(photo);
+    
+           listOfPhotosNames.add(name + ".jpg");
            listOfPhotosTaken.add(selectedImageFilePath);
            
            if (photo.exists()) photo.delete();
            
            try {
-        	 
-               
+        	
                FileOutputStream fos = new FileOutputStream(photo.getPath());
                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                fos.close();
@@ -385,9 +383,7 @@ public class MainActivity extends Activity implements OnClickListener {
                ei.setAttribute(ExifInterface.TAG_MAKE, mydeviceId);
                ei.saveAttributes();
               
-               Log.v("Saving", "SavedPhoto");
-               
-               
+               Log.v("Saving", "SavedPhoto");   
                tookPhoto=!tookPhoto;
                
                
@@ -396,13 +392,13 @@ public class MainActivity extends Activity implements OnClickListener {
            }
        }
        
-//       protected void onPostExecute() {
-//        	 //Toast Took Photo
-//  	         if(tookPhoto){
-//  	         Toast photoSave = Toast.makeText(MainActivity.this, "Saved Photo", Toast.LENGTH_SHORT);
-//  	 		 photoSave.show();
-//  	 		   }
-//           }
+       protected void onPostExecute() {
+        	 //Toast Took Photo
+  	         if(tookPhoto){
+  	         Toast photoSave = Toast.makeText(MainActivity.this, "Saved Photo", Toast.LENGTH_SHORT);
+  	 		 photoSave.show();
+  	 		   }
+           }
    }
 	
 	public void onClick(View v) {
@@ -413,19 +409,16 @@ public class MainActivity extends Activity implements OnClickListener {
 		} else {
 			startStopButton.setText("Start Motion Detection");
 			motionDetectionSwitch =false;
-//			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
-			Log.d("calledUploadPhotos", "Zebras");
+			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+//			Log.d("calledUploadPhotos", "Zebras");
+//			for (int i = 0; i < listOfPhotosTaken.size(); i++) {
+			new S3PutObjectTask().execute(listOfPhotosTaken,listOfPhotosNames);
+//			}
 			
-			for (String s : listOfPhotosTaken){
-				
-				Uri selectedImage = Uri.parse(s);
-			
-				new S3PutObjectTask().execute(selectedImage);	
-		}
 	  }
 	}
 	
-	private class S3PutObjectTask extends AsyncTask<Uri, Void, S3TaskResult> {
+	private class S3PutObjectTask extends AsyncTask<ArrayList, Void, S3TaskResult> {
 
 		ProgressDialog dialog;
 
@@ -436,26 +429,15 @@ public class MainActivity extends Activity implements OnClickListener {
 			dialog.show();
 		}
 
-		protected S3TaskResult doInBackground(String... filepath) {
+		protected S3TaskResult doInBackground(ArrayList... namesandplaces) {
 
-//			if (uris == null || uris.length != 1) {
-//				return null;
-//			}
-//
-//			// The file location of the image selected.
-//			Uri selectedImage = uris[0];
-//
-//			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//
-//			Cursor cursor = getContentResolver().query(selectedImage,
-//					filePathColumn, null, null, null);
-//			cursor.moveToFirst();
-//
-//			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String filePath = filepath[0];
-//			cursor.close();
-
-			S3TaskResult result = new S3TaskResult();
+		     ArrayList<String> passedLocations = namesandplaces[0];
+		     ArrayList<String> passedNames = namesandplaces[1];
+		     Log.d("ArraySize", String.valueOf(passedLocations.size()));
+		     
+		 	S3TaskResult result = new S3TaskResult();
+		     for (int i = 0; i < passedLocations.size(); i++) {
+		    	 String filename= passedNames.get(i).toString();
 
 			// Put the image data into S3.
 			try {
@@ -463,19 +445,21 @@ public class MainActivity extends Activity implements OnClickListener {
 
 				// Content type is determined by file extension.
 				PutObjectRequest por = new PutObjectRequest(
-						Constants.getPictureBucket(), Constants.PICTURE_NAME,
-						new java.io.File(filePath));
+						Constants.getPictureBucket(), filename,
+						new java.io.File(passedLocations.get(i)));
 				s3Client.putObject(por);
+				Log.d("trying", "tryingtoupload");
 			} catch (Exception exception) {
-
+				Log.d("exception", exception.toString());
 				result.setErrorMessage(exception.getMessage());
 			}
-
-			return result;
+		   	}
+		 	return result;
 		}
-
+		
 		protected void onPostExecute(S3TaskResult result) {
-
+			listOfPhotosNames.clear();
+			listOfPhotosTaken.clear();
 			dialog.dismiss();
 
 			if (result.getErrorMessage() != null) {

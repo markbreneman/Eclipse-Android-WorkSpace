@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Change Layout" description="Change Layout" file="/NatureCalling/res/layout/configuration.xml" flags="6" flatten="true" id="com.android.ide.eclipse.adt.refactoring.convert" proj="/NatureCalling" sel-end="3470" sel-start="39" stamp="1364869345175" type="android.widget.ScrollView"/>
+</session>

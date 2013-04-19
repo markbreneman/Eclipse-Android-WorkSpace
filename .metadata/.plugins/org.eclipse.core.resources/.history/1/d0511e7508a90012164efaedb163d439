@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent" 
+    android:layout_height="fill_parent" 
+    android:orientation="vertical" 
+    android:weightSum="1">
+    
+  <FrameLayout 
+      android:id="@+id/FrameLayout01" 
+      android:layout_width="match_parent" 
+      android:layout_height="0dp" 
+      android:layout_weight=".9">
+	    <SurfaceView 
+	        android:id="@+id/CameraView" 
+	        android:layout_width="fill_parent" 
+	        android:layout_height="fill_parent">        
+	    </SurfaceView>
+  </FrameLayout>
+  
+  <LinearLayout 
+      android:id="@+id/LinearLayout01" 
+      android:layout_width="match_parent" 
+      android:layout_height="0dp" 
+      android:orientation="horizontal" 
+      android:layout_weight=".1">
+  
+      <TextView
+          android:id="@+id/CountDownTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="-30dp" />
+
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-250dp"
+        android:minHeight="@dimen/min_button_height"
+        android:onClick="settingsClicked"
+        android:text="Settings" />
+
+    <Button
+        android:id="@+id/startStopButton"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_button_height"
+        android:text="Start Motion Detection"
+        android:textSize="12dip" />
+  	
+  	<Button
+        android:id="@+id/Upload"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_button_height"
+        android:onClick="uploadClicked"
+        android:text="upload" />
+       
+       
+  </LinearLayout>
+</LinearLayout>

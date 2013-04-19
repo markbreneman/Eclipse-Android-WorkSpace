@@ -17,23 +17,54 @@
 	        android:layout_height="fill_parent">        
 	    </SurfaceView>
   </FrameLayout>
-  
-  <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="match_parent" android:layout_height="0dp" android:orientation="horizontal" android:layout_weight=".1">
-  
+
+  <LinearLayout
+      android:id="@+id/LinearLayout01"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight=".1"
+      android:orientation="horizontal" >
+
       <TextView
           android:id="@+id/CountDownTextView"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="-30dp" />
+          android:layout_marginBottom="-30dp"
+          android:layout_marginTop="-100dp" />
 
-    <Button android:id="@+id/button1" style="?android:attr/buttonStyleSmall" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="-250dp" android:onClick="settingsClicked" android:text="Settings"/>
+      <Button
+          android:id="@+id/button1"
+          style="?android:attr/buttonStyleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="-275dp"
+          android:minHeight="@dimen/min_button_height"
+          android:onClick="settingsClicked"
+          android:text="Settings" />
 
-    <Button
-        android:id="@+id/startStopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Motion Detection"
-        android:textSize="@dimen/TextSizeStartStopButton" />
+      <Button
+          android:id="@+id/startStopButton"
+          android:layout_width="100dp"
+          android:layout_height="60dp"
+          android:minHeight="@dimen/min_button_height"
+          android:text="Start Motion Detection"
+          android:textSize="12dip" />
 
+      <Button
+          android:id="@+id/Upload"
+          style="?android:attr/buttonStyleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/min_button_height"
+          android:onClick="uploadClicked"
+          android:text="Upload" />
   </LinearLayout>
+  
+  <TextView
+    android:id="@+id/progressText"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text=""
+    android:layout_marginTop="-100dp"
+    />
 </LinearLayout>

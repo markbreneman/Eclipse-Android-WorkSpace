@@ -3,7 +3,9 @@ package com.example.thesecondnatureproject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //import java.util.prefs.Preferences;
 import java.net.URL;
 import java.util.Date;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -93,6 +114,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String lon;
 	
 	
+	TextView progressText;
+	
+	
 	//WHEN THE APP STARTS
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +154,9 @@ public class MainActivity extends Activity implements OnClickListener {
          mydeviceId = DeviceId;
          Log.v("My Id", "Android DeviceId is: " +DeviceId); 
         
+       //SETUP UPLOAD DIALOG BOX
+         progressText = (TextView) findViewById(R.id.progressText);
+         
 	}
 	
 	//DECLARE FUNCTION FOR WHAT HAPPENS ON CONFIGURATION CHANGES ex. screen rotation.
@@ -346,8 +373,6 @@ public class MainActivity extends Activity implements OnClickListener {
    };	
 
    
-   //How does this AsyncTask Work? - Shawn
-   //How does do in backgroundwork? - Shawn
     class SavePhotoTask extends AsyncTask<Bitmap, Integer, Integer> {
       
        @Override
@@ -368,7 +393,7 @@ public class MainActivity extends Activity implements OnClickListener {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
            String selectedImageFilePath=photo.getAbsolutePath();           
            Uri selectedImageUri = Uri.fromFile(photo);
-    
+           
            listOfPhotosNames.add(name + ".jpg");
            listOfPhotosTaken.add(selectedImageFilePath);
            
@@ -411,11 +436,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			startStopButton.setText("Start Motion Detection");
 			motionDetectionSwitch =false;
 			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
-//			Log.d("calledUploadPhotos", "Zebras");
-//			for (int i = 0; i < listOfPhotosTaken.size(); i++) {
-			new S3PutObjectTask().execute(listOfPhotosTaken,listOfPhotosNames);
-//			}
-			
 	  }
 	}
 	
@@ -520,8 +540,119 @@ public class MainActivity extends Activity implements OnClickListener {
 //		i.putExtra(MainActivity.PASSING_DATA, "Here is the data I am passing");
 		startActivityForResult(i, configuration);	
 	}
+	
+	public void uploadClicked(View v){
+		Log.v("uploadClicked","upload Clicked");	
+		new SecondNatureUpload(listOfPhotosTaken,listOfPhotosNames);
+//		new S3PutObjectTask().execute(listOfPhotosTaken,listOfPhotosNames);
+				
+	}
 
-	
-	
+	class SecondNatureUpload extends AsyncTask<Void, String, Void> implements
+	ProgressListener {
+
+		String videoUrl;
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+		
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost("http://www.thesecondnatureproject.com/upload");
+		
+			ProgressMultipartEntity multipartentity = new ProgressMultipartEntity(
+					this);
+		
+			try {
+				multipartentity.addPart("fileupload", new FileBody(imageFile));
+				multipartentity.addPart("title", new StringBody(title));
+				multipartentity.addPart("description", new StringBody(description));
+				multipartentity.addPart("postedby", new StringBody(postedby));
+		
+				httppost.setEntity(multipartentity);
+				HttpResponse httpresponse = httpclient.execute(httppost);
+		
+				HttpEntity responseentity = httpresponse.getEntity();
+				if (responseentity != null) {
+		
+					InputStream inputstream = responseentity.getContent();
+					//This is where the return message goes.
+					inputstream.close();
+		
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+			return null;
+		}
+		
+		
+		protected void onProgressUpdate(String... textToDisplay) {
+			progressText.setText(textToDisplay[0]);
+		}
+		
+		protected void onPostExecute(Void result) {
+			if (videoUrl != null) {
+//				Intent viewVideoIntent = new Intent(Intent.ACTION_VIEW);
+//				Uri uri = Uri.parse("http" + videoUrl);
+//				viewVideoIntent.setDataAndType(uri, "video/3gpp");
+//				startActivityForResult(viewVideoIntent, VIDEO_PLAYED);
+			}
+		}
+		
+		public void transferred(long num) {
+			double percent = (double) num / (double) fileLength;
+			int percentInt = (int) (percent * 100);
+		
+			publishProgress("" + percentInt + "% Transferred");
+		}
+		
+		
+	} //Ends Upload Task
+
+	class ProgressMultipartEntity extends MultipartEntity {
+		ProgressListener progressListener;
+
+		public ProgressMultipartEntity(ProgressListener pListener) {
+			super();
+			this.progressListener = pListener;
+		}
+
+		@Override
+		public void writeTo(OutputStream outstream) throws IOException {
+			super.writeTo(new ProgressOutputStream(outstream,
+					this.progressListener));
+		}
+	}
+	interface ProgressListener {
+		void transferred(long num);
+	}
+
+	static class ProgressOutputStream extends FilterOutputStream {
+
+		ProgressListener listener;
+		int transferred;
+
+		public ProgressOutputStream(final OutputStream out,
+				ProgressListener listener) {
+			super(out);
+			this.listener = listener;
+			this.transferred = 0;
+		}
+
+		public void write(byte[] b, int off, int len) throws IOException {
+			out.write(b, off, len);
+			this.transferred += len;
+			this.listener.transferred(this.transferred);
+		}
+
+		public void write(int b) throws IOException {
+			out.write(b);
+			this.transferred++;
+			this.listener.transferred(this.transferred);
+		}
+	}
 }
 

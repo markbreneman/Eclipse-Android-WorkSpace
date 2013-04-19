@@ -15,9 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.net.URL;
 import java.util.Date;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,11 +25,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
+
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -101,19 +94,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static boolean tookPhoto = false;
 	public static final int configuration= 0;
 	
-	public static ArrayList<String> listOfPhotosNames = new ArrayList();
-	public static ArrayList<String> listOfPhotosTaken = new ArrayList();
-	
 	private AmazonS3Client s3Client = new AmazonS3Client(
 			new BasicAWSCredentials(Constants.ACCESS_KEY_ID,
 					Constants.SECRET_KEY));
+	
+	public static ArrayList<Photoobject> listofPhotoobjects = new ArrayList<Photoobject>();
 	
 	TelephonyManager tm;
 	public static String mydeviceId;
 	public static String lat;
 	public static String lon;
 	
-	
+	//IMAGE UPLOADING ATTRIBUTES
+	long fileLength = 0;
 	TextView progressText;
 	
 	
@@ -353,7 +346,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
                        Log.i(TAG, "Saving.. previous=" + previous + " original=" + original + " bitmap=" + bitmap);
                        
-                       //How does this Looper thing Work? - Shawn
+                      
                        Looper.prepare();
                        //CALL THE SAVE PHOTO FUNCTION
                        new SavePhotoTask().execute(previous, original, bitmap);
@@ -382,20 +375,27 @@ public class MainActivity extends Activity implements OnClickListener {
                Bitmap bitmap = data[i];
                ///THIS IS WHERE THE FILE NAME IS SET
                String name = String.valueOf(mydeviceId+"_"+System.currentTimeMillis());
-               
                if (bitmap != null) save(name, bitmap);
+               
            }
            return 1;      
-           
        }
-
+       
+  
        private void save(String name, Bitmap bitmap) {
            File photo = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
            String selectedImageFilePath=photo.getAbsolutePath();           
            Uri selectedImageUri = Uri.fromFile(photo);
+           String theDevice=mydeviceId;
+           Long timeTaken=System.currentTimeMillis();
+           fileLength=photo.length();
            
-           listOfPhotosNames.add(name + ".jpg");
-           listOfPhotosTaken.add(selectedImageFilePath);
+           Photoobject currentPhoto=new Photoobject();
+           currentPhoto.create(name, timeTaken, theDevice, photo, fileLength);
+           
+                    
+           listofPhotoobjects.add(currentPhoto);
+           
            
            if (photo.exists()) photo.delete();
            
@@ -426,111 +426,40 @@ public class MainActivity extends Activity implements OnClickListener {
   	 		   }
            }
    }
-	
+   
+    //SETUP A "PHOTO-OBJECT"
+    class Photoobject{
+    	String fileNameOfPhoto;
+    	Long timePhotoTaken;
+    	String deviceTakenOn;
+    	File theFile;
+    	Long theFileSize;
+    	
+    	public void create(String photoName, Long photoTimeTaken, String photoDevice, File photoFile, Long photoSize){
+    		fileNameOfPhoto= photoName;
+    		timePhotoTaken= photoTimeTaken;
+    		deviceTakenOn= photoDevice;
+    		theFile= photoFile;
+    		theFileSize=photoSize;
+//    		Log.v("CreatePhotoObject", "Created PhotoObject");
+    	}
+    	
+    }
+    
+    //START STOP MOTION DETECTION
 	public void onClick(View v) {
 
 		if(!motionDetectionSwitch){
 			startStopButton.setText("Stop Motion Detection");
 			motionDetectionSwitch =true;
+			
+			
 		} else {
 			startStopButton.setText("Start Motion Detection");
 			motionDetectionSwitch =false;
 			this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+			
 	  }
-	}
-	
-	private class S3PutObjectTask extends AsyncTask<ArrayList, Void, S3TaskResult> {
-
-		ProgressDialog dialog;
-
-		protected void onPreExecute() {
-			dialog = new ProgressDialog(MainActivity.this);
-			dialog.setMessage("Uploading");
-			dialog.setCancelable(false);
-			dialog.show();
-		}
-
-		protected S3TaskResult doInBackground(ArrayList... namesandplaces) {
-
-		     ArrayList<String> passedLocations = namesandplaces[0];
-		     ArrayList<String> passedNames = namesandplaces[1];
-		     Log.d("ArraySize", String.valueOf(passedLocations.size()));
-		     
-		 	S3TaskResult result = new S3TaskResult();
-		     for (int i = 0; i < passedLocations.size(); i++) {
-		    	 String filename= passedNames.get(i).toString();
-
-			// Put the image data into S3.
-			try {
-				s3Client.createBucket(Constants.getPictureBucket());
-
-				// Content type is determined by file extension.
-				PutObjectRequest por = new PutObjectRequest(
-						Constants.getPictureBucket(), filename,
-						new java.io.File(passedLocations.get(i)));
-				s3Client.putObject(por);
-				Log.d("trying", "tryingtoupload");
-			} catch (Exception exception) {
-				Log.d("exception", exception.toString());
-				result.setErrorMessage(exception.getMessage());
-			}
-		   	}
-		 	return result;
-		}
-		
-		protected void onPostExecute(S3TaskResult result) {
-			listOfPhotosNames.clear();
-			listOfPhotosTaken.clear();
-			dialog.dismiss();
-
-			if (result.getErrorMessage() != null) {
-
-				displayErrorAlert(
-						MainActivity.this
-								.getString(R.string.upload_failure_title),
-						result.getErrorMessage());
-			}
-		}
-	}
-	
-	private class S3TaskResult {
-		String errorMessage = null;
-		Uri uri = null;
-
-		public String getErrorMessage() {
-			return errorMessage;
-		}
-
-		public void setErrorMessage(String errorMessage) {
-			this.errorMessage = errorMessage;
-		}
-
-		public Uri getUri() {
-			return uri;
-		}
-
-		public void setUri(Uri uri) {
-			this.uri = uri;
-		}
-	}	
-
-	protected void displayErrorAlert(String title, String message) {
-
-		AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-		confirm.setTitle(title);
-		confirm.setMessage(message);
-
-		confirm.setNegativeButton(
-				MainActivity.this.getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-
-						MainActivity.this.finish();
-					}
-				});
-
-		confirm.show().show();
 	}
 	
 	//SWITCHING TO SETTINGS
@@ -543,49 +472,66 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	public void uploadClicked(View v){
 		Log.v("uploadClicked","upload Clicked");	
-		new SecondNatureUpload(listOfPhotosTaken,listOfPhotosNames);
-//		new S3PutObjectTask().execute(listOfPhotosTaken,listOfPhotosNames);
+		new SecondNatureUpload().execute(listofPhotoobjects);
 				
 	}
 
-	class SecondNatureUpload extends AsyncTask<Void, String, Void> implements
+	class SecondNatureUpload extends AsyncTask<ArrayList<Photoobject>, String, Void> implements
+	
 	ProgressListener {
 
-		String videoUrl;
 		
 		@Override
-		protected Void doInBackground(Void... params) {
-		
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost("http://www.thesecondnatureproject.com/upload");
-		
-			ProgressMultipartEntity multipartentity = new ProgressMultipartEntity(
-					this);
-		
-			try {
-				multipartentity.addPart("fileupload", new FileBody(imageFile));
-				multipartentity.addPart("title", new StringBody(title));
-				multipartentity.addPart("description", new StringBody(description));
-				multipartentity.addPart("postedby", new StringBody(postedby));
-		
-				httppost.setEntity(multipartentity);
-				HttpResponse httpresponse = httpclient.execute(httppost);
-		
-				HttpEntity responseentity = httpresponse.getEntity();
-				if (responseentity != null) {
-		
-					InputStream inputstream = responseentity.getContent();
-					//This is where the return message goes.
-					inputstream.close();
-		
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
-			return null;
+		protected Void doInBackground(ArrayList<Photoobject>... photoObjectList) {
+			
+		    ArrayList<Photoobject> passedinlistOfPhotoObject= photoObjectList[0];
+		    
+		    for (int i = 0; i < passedinlistOfPhotoObject.size(); i++) {
+		    	
+		    	
+		    	String fileName= passedinlistOfPhotoObject.get(i).fileNameOfPhoto;
+		    	String	timeTaken=passedinlistOfPhotoObject.get(i).timePhotoTaken.toString();
+		    	String location= passedinlistOfPhotoObject.get(i).deviceTakenOn;
+		    	File photoFile= passedinlistOfPhotoObject.get(i).theFile;
+		    	
+
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost("http://www.thesecondnatureproject.com/upload");
+				
+				
+				ProgressMultipartEntity multipartentity = new ProgressMultipartEntity(this);
+				
+				Log.v("hello","hello");
+				
+				try {	
+					
+					 	multipartentity.addPart("fileName", new StringBody(fileName));
+						multipartentity.addPart("timeTaken", new StringBody(timeTaken));
+						multipartentity.addPart("UUID", new StringBody(location));
+						multipartentity.addPart("fileupload", new FileBody(photoFile));
+						
+						Log.v("TryingtoUpload","Trying to Upload");	
+						
+				
+						httppost.setEntity(multipartentity);
+						HttpResponse httpresponse = httpclient.execute(httppost);
+				
+						HttpEntity responseentity = httpresponse.getEntity();
+						if (responseentity != null) {
+				
+							InputStream inputstream = responseentity.getContent();
+							//This is where the return message goes.
+							inputstream.close();
+				
+						}
+					} catch (ClientProtocolException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				 return null;		
+				} //END FOR LOOP
+		    return null;
 		}
 		
 		
@@ -594,12 +540,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		
 		protected void onPostExecute(Void result) {
-			if (videoUrl != null) {
-//				Intent viewVideoIntent = new Intent(Intent.ACTION_VIEW);
-//				Uri uri = Uri.parse("http" + videoUrl);
-//				viewVideoIntent.setDataAndType(uri, "video/3gpp");
-//				startActivityForResult(viewVideoIntent, VIDEO_PLAYED);
-			}
+			
 		}
 		
 		public void transferred(long num) {
